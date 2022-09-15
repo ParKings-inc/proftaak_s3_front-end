@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/login" element={<LoginPage></LoginPage>}></Route>
-        <Route path="/signup" element={<div></div>}></Route>
+        <Route path="/signup" element={<SignUpPage></SignUpPage>}></Route>
       </Routes>
     </BrowserRouter>
   );
