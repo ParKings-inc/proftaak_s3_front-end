@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const ACCOUNT_BASE_REST_API_URL = "http://localhost:7205/api/Authentication";
+const ACCOUNT_BASE_REST_API_URL = "https://localhost:7205/api/Authentication";
 class AccountService {
   loginUser(jwt) {
     console.log(jwt);
     return axios.post(
       ACCOUNT_BASE_REST_API_URL,
-      { loginValue: jwt.credential },
+      { encryptedJWT: jwt.credential },
       {
         withCredentials: true,
       }
@@ -14,7 +14,7 @@ class AccountService {
   }
 
   getUser() {
-    return axios.get(ACCOUNT_BASE_REST_API_URL, { withCredentials: true });
+    const response = axios.get(ACCOUNT_BASE_REST_API_URL, { withCredentials: true }).then(jwt => { console.log(jwt.data); });
   }
 
   parseJwt(token) {
