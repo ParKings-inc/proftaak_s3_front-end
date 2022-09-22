@@ -3,20 +3,24 @@ import '../style/SignUpPage.css';
 import GoogleLogo from '../assets/logos/google.svg';
 import AutoLoginButton from "../components/AutoLoginButton";
 import AccountService from "../services/AccountService";
+import LoginButton from "../components/LoginButton"
 
 export default class LoginPage extends Component {
-    public override render(): ReactNode {
+    constructor(props) {
+        props =super(props);
+    }
+     render() {
         return (
             <div className="centre">
                 <div className="title">Log In</div>
                 <div className="login-container">
-                    <AutoLoginButton text="Log in with Google" image={GoogleLogo} onClick={() => this.loginGoogle()} />
+                    <LoginButton value={this.props.value}/>
                 </div>
             </div>
         );
     }
 
-    private loginGoogle(): void {
+ loginGoogle() {
         const service = new AccountService();
         console.warn("Login")
         service.loginUser();
