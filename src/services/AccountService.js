@@ -14,7 +14,17 @@ class AccountService {
   }
 
   getUser() {
-    const response = axios.get(ACCOUNT_BASE_REST_API_URL, { withCredentials: true }).then(jwt => { console.log(jwt.data); });
+    return axios.get(ACCOUNT_BASE_REST_API_URL, { withCredentials: true });
+  }
+
+  logoutUser() {
+    return axios.post(
+      ACCOUNT_BASE_REST_API_URL,
+      { encryptedJWT: "" },
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   parseJwt(token) {
