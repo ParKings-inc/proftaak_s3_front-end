@@ -2,6 +2,7 @@ import { Component, ReactNode } from "react";
 import '../style/SignUpPage.css';
 import GoogleLogo from '../assets/logos/google.svg';
 import AutoLoginButton from "../components/AutoLoginButton";
+import AccountService from "../services/AccountService";
 
 export default class LoginPage extends Component {
     public override render(): ReactNode {
@@ -15,5 +16,9 @@ export default class LoginPage extends Component {
         );
     }
 
-    private loginGoogle(): void {}
+    private loginGoogle(): void {
+        const service = new AccountService();
+        console.warn("Login")
+        service.loginUser();
+    }
 }

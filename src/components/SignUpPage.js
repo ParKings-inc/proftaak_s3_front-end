@@ -26,7 +26,7 @@ const SignUpPage = (props) => {
             cookiePolicy={"single_host_origin"}
           />
         </GoogleOAuthProvider>
-        <button onClick={() => props.value.userLogout()}>hello</button>
+ 
         <userContext.Consumer>
           {({user}) => {
             return(
