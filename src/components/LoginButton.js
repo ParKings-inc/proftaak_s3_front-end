@@ -2,42 +2,34 @@ import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import AccountService from "../services/AccountService";
-import {userContext} from '../userContext';
+import { userContext } from "../userContext";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage = (props) => {
+  const navigate = useNavigate();
   const [stateCredentials, setStateCredentials] = useState(null);
   const service = new AccountService();
   return (
     <>
       <GoogleOAuthProvider clientId="470134517886-f5sgc46163gim5b4dtba1j3egd06hmoa.apps.googleusercontent.com">
-          <GoogleLogin
-            buttonText="Sign In with Google"
-            onSuccess={(response) => {
-              service.loginUser(response);
-              console.log(service.parseJwt(response.credential));
-              const userCredentials = service.parseJwt(response.credential);
-              props.value.userLogin(userCredentials)
-            }}
-            onFailure={(response) => {
-              console.log(response);
-            }}
-            isSignedIn={true}
-            cookiePolicy={"single_host_origin"}
-          />
-        </GoogleOAuthProvider>
- 
-        <userContext.Consumer>
-          {({user}) => {
-            return(
-                user == null ?
-                <h2>U bent uitgelogd</h2> :
-                <h2>U bent ingelogd als {user.given_name}</h2>              
-            );
+        <GoogleLogin
+          buttonText="Sign In with Google"
+          onSuccess={(response) => {
+            service.loginUser(response);
+            console.log(service.parseJwt(response.credential));
+            const userCredentials = service.parseJwt(response.credential);
+            props.value.userLogin(userCredentials);
+            navigate("/");
           }}
-      </userContext.Consumer>
+          onFailure={(response) => {
+            console.log(response);
+          }}
+          isSignedIn={true}
+          cookiePolicy={"single_host_origin"}
+        />
+      </GoogleOAuthProvider>
     </>
-      
   );
 };
 

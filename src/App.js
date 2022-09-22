@@ -52,12 +52,16 @@ function App() {
                 <li>
                   <Link to="/">Home</Link>
                 </li>
-                <li className="router-space">
-                  <Link to="/login">Log In</Link>
-                </li>
-                <li>
-                  <Link to="/signup">Sign Up</Link>
-                </li>
+
+                {stateUser == null ? (
+                  <li className="router-space">
+                    <Link to="/login">Log In</Link>
+                  </li>
+                ) : (
+                  <li className="router-space">
+                    <button onClick={logoutUser}>Log Out</button>
+                  </li>
+                )}
               </ul>
             </nav>
           </div>
