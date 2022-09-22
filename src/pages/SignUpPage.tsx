@@ -1,6 +1,7 @@
 import React, { Component, ReactNode } from "react";
 import '../style/LoginPage.css';
 import GoogleLogo from '../assets/logos/google.svg';
+import AutoLoginButton from "../components/AutoLoginButton";
 
 export default class SignUpPage extends Component {
     public render(): ReactNode {
@@ -8,10 +9,7 @@ export default class SignUpPage extends Component {
             <div className="centre">
                 <div className="title">Log In</div>
                 <div className="login-container">
-                    <button className="login-button">
-                        <img src={GoogleLogo} alt="Google Logo"></img>
-                        <div className="login-text">Log in with Google</div>
-                    </button>
+                    <AutoLoginButton text="Sign up with Google" image={GoogleLogo} />
                 </div>
             </div>
         )
