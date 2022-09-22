@@ -4,8 +4,15 @@ const ACCOUNT_BASE_REST_API_URL = "https://localhost:7205/api/Authentication";
 class AccountService {
   loginUser(jwt) {
     console.log(jwt);
-    return axios.post(
+    axios.post(
       ACCOUNT_BASE_REST_API_URL,
+      { encryptedJWT: jwt.credential },
+      {
+        withCredentials: true,
+      }
+    );
+    return axios.post(
+      "https://localhost:7205/api/Users",
       { encryptedJWT: jwt.credential },
       {
         withCredentials: true,
