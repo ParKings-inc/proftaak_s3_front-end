@@ -1,9 +1,14 @@
+import './App.css';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 import logo from "./logo.svg";
-import SignUpPage from "./components/SignUpPage";
 import AccountService from "./services/AccountService";
 import { userContext } from "./userContext";
 import { useState, useEffect } from "react";
 import "./App.css";
+
 
 function App() {
   const [stateUser, setStateUser] = useState(null);
@@ -40,11 +45,28 @@ function App() {
   
 
   return (
-    <div className="App">
-      <userContext.Provider value={value}>
-        <SignUpPage value={value}/>
-      </userContext.Provider>
-    </div>
+    <BrowserRouter>
+      <div>
+        <nav>
+          <ul className="router">
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li className="router-space">
+              <Link to="/login">Log In</Link>
+            </li>
+            <li>
+              <Link to="/signup">Sign Up</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <Routes>
+        <Route path="/" element={<HomePage></HomePage>}></Route>
+        <Route path="/login" element={<LoginPage></LoginPage>}></Route>
+        <Route path="/signup" element={<SignUpPage></SignUpPage>}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
