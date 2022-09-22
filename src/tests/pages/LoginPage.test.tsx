@@ -3,7 +3,7 @@ import LoginPage from '../../pages/LoginPage';
 
 
 test("Login page renders title", () => {
-  render(<LoginPage />);
+  render(<LoginPage value={{}} />);
   const titleElement = screen.getByText(/^Log In$/i);
   expect(titleElement).toBeInTheDocument();
 });

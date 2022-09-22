@@ -5,11 +5,12 @@ import AutoLoginButton from "../components/AutoLoginButton";
 import AccountService from "../services/AccountService";
 import LoginButton from "../components/LoginButton"
 
-export default class LoginPage extends Component {
-    constructor(props) {
-        props =super(props);
-    }
-     render() {
+interface Properties {
+    value: {}
+}
+
+export default class LoginPage extends Component<Properties> {
+    public override render(): ReactNode {
         return (
             <div className="centre">
                 <div className="title">Log In</div>
@@ -20,7 +21,7 @@ export default class LoginPage extends Component {
         );
     }
 
- loginGoogle() {
+    private loginGoogle(): void {
         const service = new AccountService();
         console.warn("Login")
         service.loginUser();
