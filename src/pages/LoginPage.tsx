@@ -9,9 +9,11 @@ export default class LoginPage extends Component {
             <div className="centre">
                 <div className="title">Log In</div>
                 <div className="login-container">
-                    <AutoLoginButton text="Log in with Google" image={GoogleLogo} />
+                    <AutoLoginButton text="Log in with Google" image={GoogleLogo} onClick={() => this.loginGoogle()} />
                 </div>
             </div>
         );
     }
+
+    private loginGoogle(): void {}
 }
