@@ -59,7 +59,7 @@ function App() {
                   </li>
                 ) : (
                   <li className="router-space">
-                    <button onClick={logoutUser}>Log Out</button>
+                    <button id="logout" onClick={logoutUser}>Log Out</button>
                   </li>
                 )}
               </ul>
