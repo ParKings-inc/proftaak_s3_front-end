@@ -12,15 +12,13 @@ const SignUpPage = () => {
         buttonText="Sign In with Google"
         onSuccess={(response) => {
           service.loginUser(response);
-          console.log(response);
+          console.log(service.parseJwt(response.credential));
         }}
         onFailure={(response) => {
           console.log(response);
         }}
         isSignedIn={true}
         cookiePolicy={"single_host_origin"}
-        useOneTap
-        auto_select
       />
     </GoogleOAuthProvider>
   );

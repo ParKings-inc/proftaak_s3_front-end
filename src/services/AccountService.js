@@ -6,7 +6,7 @@ class AccountService {
     console.log(jwt);
     return axios.post(
       ACCOUNT_BASE_REST_API_URL,
-      { loginValue: jwt.credential },
+      { encryptedJWT: jwt.credential },
       {
         withCredentials: true,
       }
