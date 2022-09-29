@@ -16,7 +16,7 @@ const SignUpPage = (props) => {
         <GoogleLogin
           buttonText="Sign In with Google"
           onSuccess={(response) => {
-            service.loginUser(response);
+            service.setUser(response);
             console.log(service.parseJwt(response.credential));
             const userCredentials = service.parseJwt(response.credential);
             props.value.userLogin(userCredentials);

@@ -24,6 +24,6 @@ export default class LoginPage extends Component<Properties> {
     private loginGoogle(): void {
         const service = new AccountService();
         console.warn("Login")
-        service.loginUser();
+        service.setUser();
     }
 }

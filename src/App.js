@@ -35,8 +35,8 @@ function App() {
       const user = await service.getUser();
       console.log("is dis parsed user");
       console.log(user);
-      if (user.data != "") {
-        setStateUser(await service.parseJwt(user.data));
+      if (user != "") {
+        setStateUser(await service.parseJwt(user));
       }
     }
     assignCredential();
