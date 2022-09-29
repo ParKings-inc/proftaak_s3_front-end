@@ -22,3 +22,12 @@ ul.router {
   padding: 16px;
   text-decoration: none;
 }
+
+#logout{
+  border: none;
+  background: #DDDDDD;
+  padding-right: 2em;
+}
+#logout:hover{
+  cursor: pointer;
+}

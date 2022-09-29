@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import { Component, ReactNode } from "react";
 import '../style/LoginPage.css';
 import GoogleLogo from '../assets/logos/google.svg';
 import AutoLoginButton from "../components/AutoLoginButton";
@@ -9,9 +9,11 @@ export default class SignUpPage extends Component {
             <div className="centre">
                 <div className="title">Log In</div>
                 <div className="login-container">
-                    <AutoLoginButton text="Sign up with Google" image={GoogleLogo} />
+                    <AutoLoginButton text="Sign up with Google" image={GoogleLogo} onClick={() => this.signupGoogle()} />
                 </div>
             </div>
         )
     }
+
+    private signupGoogle(): void {}
 }

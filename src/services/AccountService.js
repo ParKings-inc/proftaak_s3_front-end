@@ -4,8 +4,19 @@ const ACCOUNT_BASE_REST_API_URL = "https://localhost:7205/api/Authentication";
 class AccountService {
   loginUser(jwt) {
     console.log(jwt);
+      this.SaveUser(jwt)
     return axios.post(
       ACCOUNT_BASE_REST_API_URL,
+      { encryptedJWT: jwt.credential },
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  SaveUser(jwt) {
+    return axios.post(
+      "https://localhost:7205/api/Users",
       { encryptedJWT: jwt.credential },
       {
         withCredentials: true,
@@ -18,6 +29,7 @@ class AccountService {
   }
 
   logoutUser() {
+    console.log("logout");
     return axios.post(
       ACCOUNT_BASE_REST_API_URL,
       { encryptedJWT: "" },
