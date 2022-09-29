@@ -2,16 +2,10 @@ import axios from "axios";
 
 const ACCOUNT_BASE_REST_API_URL = "https://localhost:7205/api/Authentication";
 class AccountService {
-  loginUser(jwt) {
+  setUser(jwt) {
     console.log(jwt);
-      this.SaveUser(jwt)
-    return axios.post(
-      ACCOUNT_BASE_REST_API_URL,
-      { encryptedJWT: jwt.credential },
-      {
-        withCredentials: true,
-      }
-    );
+    this.SaveUser(jwt);
+    sessionStorage.setItem("UserData", jwt.credential);
   }
 
   SaveUser(jwt) {
@@ -25,18 +19,12 @@ class AccountService {
   }
 
   getUser() {
-    return axios.get(ACCOUNT_BASE_REST_API_URL, { withCredentials: true });
+    return sessionStorage.getItem("UserData");
   }
 
   logoutUser() {
     console.log("logout");
-    return axios.post(
-      ACCOUNT_BASE_REST_API_URL,
-      { encryptedJWT: "" },
-      {
-        withCredentials: true,
-      }
-    );
+    sessionStorage.removeItem("UserData");
   }
 
   parseJwt(token) {
