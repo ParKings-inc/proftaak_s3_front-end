@@ -23,3 +23,4 @@ export async function getGarage(data)
         return [];
     }
 }
+

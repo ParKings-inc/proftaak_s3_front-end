@@ -3,11 +3,12 @@ import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import logo from "./logo.svg";
 import AccountService from "./services/AccountService";
 import { userContext } from "./userContext";
 import { useState, useEffect } from "react";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import ParkingspacesOverview from "./pages/ParkingspacesOverview";
 
 function App() {
   const [stateUser, setStateUser] = useState(null);
@@ -33,14 +34,12 @@ function App() {
   useEffect(() => {
     async function assignCredential() {
       const user = await service.getUser();
-      console.log("is dis parsed user");
-      console.log(user);
-      if (user != "") {
+      if (user !== "" && user !== null) {
         setStateUser(await service.parseJwt(user));
       }
     }
     assignCredential();
-  }, []);
+  });
 
   return (
     <div>
@@ -52,6 +51,9 @@ function App() {
                 <li>
                   <Link to="/">Home</Link>
                 </li>
+                <li>
+                  <Link to="/parking-overview">Parking overview</Link>
+                </li>
 
                 {stateUser == null ? (
                   <li className="router-space">
@@ -59,7 +61,9 @@ function App() {
                   </li>
                 ) : (
                   <li className="router-space">
-                    <button id="logout" onClick={logoutUser}>Log Out</button>
+                    <button id="logout" onClick={logoutUser}>
+                      Log Out
+                    </button>
                   </li>
                 )}
               </ul>
@@ -72,6 +76,10 @@ function App() {
               element={<LoginPage value={value}></LoginPage>}
             ></Route>
             <Route path="/signup" element={<SignUpPage></SignUpPage>}></Route>
+            <Route
+              path="/parking-overview"
+              element={<ParkingspacesOverview></ParkingspacesOverview>}
+            ></Route>
           </Routes>
         </BrowserRouter>
       </userContext.Provider>
