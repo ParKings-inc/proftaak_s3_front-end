@@ -8,6 +8,7 @@ import AccountService from "./services/AccountService";
 import { userContext } from "./userContext";
 import { useState, useEffect } from "react";
 import "./App.css";
+import AddCarPage from "./pages/AddCarPage";
 
 function App() {
   const [stateUser, setStateUser] = useState(null);
@@ -53,20 +54,22 @@ function App() {
                   <Link to="/">Home</Link>
                 </li>
 
-                {stateUser == null ? (
+                {stateUser == null ? (<>
                   <li className="router-space">
                     <Link to="/login">Log In</Link>
-                  </li>
+                  </li></>
                 ) : (
+                  <><li><Link to="/carpage">car page</Link></li>
                   <li className="router-space">
                     <button id="logout" onClick={logoutUser}>Log Out</button>
-                  </li>
+                  </li></>
                 )}
               </ul>
             </nav>
           </div>
           <Routes>
             <Route path="/" element={<HomePage></HomePage>}></Route>
+            {stateUser != null? <Route path="/carpage" element={<AddCarPage></AddCarPage>}></Route>: <></>}
             <Route
               path="/login"
               element={<LoginPage value={value}></LoginPage>}
