@@ -9,6 +9,7 @@ import { userContext } from "./userContext";
 import { useState, useEffect } from "react";
 import "./App.css";
 import AddCarPage from "./pages/AddCarPage";
+import EntranceScannerPage from "./pages/EntranceScannerPage";
 
 function App() {
   const [stateUser, setStateUser] = useState(null);
@@ -53,7 +54,7 @@ function App() {
                 <li>
                   <Link to="/">Home</Link>
                 </li>
-
+                <li><Link to="/entrancescannerpage">scanner page</Link></li>
                 {stateUser == null ? (<>
                   <li className="router-space">
                     <Link to="/login">Log In</Link>
@@ -69,6 +70,7 @@ function App() {
           </div>
           <Routes>
             <Route path="/" element={<HomePage></HomePage>}></Route>
+            <Route path="/entrancescannerpage" element={<EntranceScannerPage></EntranceScannerPage>}></Route>
             {stateUser != null? <Route path="/carpage" element={<AddCarPage></AddCarPage>}></Route>: <></>}
             <Route
               path="/login"

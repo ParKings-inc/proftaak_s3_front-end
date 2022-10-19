@@ -1,36 +1,28 @@
 import React from 'react'
-import { userContext } from '../userContext'
 import { useState } from 'react'
 import { Input } from '@mui/material'
-import { AddCar } from '../services/CarService'
+import { KentekenExists } from '../services/ScannerService'
 
-const AddCarPage = () => {
+const EntranceScannerPage = () => {
     const [user, setUser] = useState(null)
-    
+    let kentekenExists = "false";
+
     function OnSubmit(){
         let LicensePlate = document.getElementById('license').value
         let data = {
-            userID: user.sub,
             kenteken: LicensePlate
           }
-        console.log(data)
-        console.log(user)
-        AddCar(data)
+        KentekenExists(data)
     }
 
   return (
     <>
-    <userContext.Consumer>
-        {(value) => setUser(value.user)}
-    </userContext.Consumer>
-    <>
-    <h2>Add license plate</h2>
+    <h2>Scan license plate to enter</h2>
     <input type="text" id='license'></input>
     <button onClick={OnSubmit}>submit</button>
-    </>
     </>
     
   )
 }
 
-export default AddCarPage
+export default EntranceScannerPage
