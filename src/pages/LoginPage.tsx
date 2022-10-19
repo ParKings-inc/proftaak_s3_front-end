@@ -1,7 +1,5 @@
 import { Component, ReactNode } from "react";
 import '../style/SignUpPage.css';
-import GoogleLogo from '../assets/logos/google.svg';
-import AutoLoginButton from "../components/AutoLoginButton";
 import AccountService from "../services/AccountService";
 import LoginButton from "../components/LoginButton"
 

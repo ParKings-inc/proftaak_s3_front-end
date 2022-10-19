@@ -2,13 +2,11 @@ import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import AccountService from "../services/AccountService";
-import { userContext } from "../userContext";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignUpPage = (props) => {
   const navigate = useNavigate();
-  const [stateCredentials, setStateCredentials] = useState(null);
+
   const service = new AccountService();
   return (
     <>
