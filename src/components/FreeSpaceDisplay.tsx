@@ -38,7 +38,6 @@ export default class FreeSpaceDisplay extends Component<{}, State> {
 
   componentDidMount(): void {
     this.assignFreeSpaces(1);
-
   }
   //#endregion
 
