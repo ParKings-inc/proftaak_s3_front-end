@@ -1,6 +1,5 @@
 import axios from "axios";
 
-const ACCOUNT_BASE_REST_API_URL = "https://localhost:7205/api/Authentication";
 class AccountService {
   setUser(jwt) {
     console.log(jwt);
