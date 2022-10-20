@@ -8,7 +8,8 @@ import { userContext } from "./userContext";
 import { useState, useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import ParkingspacesOverview from "./pages/ParkingspacesOverview";
+//import ParkingspacesOverview from "./pages/ParkingspacesOverview";
+import ReservationOverviewPage from "./pages/ReservationPages/ReservationOverviewPage";
 
 function App() {
   const [stateUser, setStateUser] = useState(null);
@@ -51,7 +52,9 @@ function App() {
                 <li>
                   <Link to="/">Home</Link>
                 </li>
-
+                <li className="">
+                  <Link to="/reservations">Reservations</Link>
+                </li>
                 {stateUser == null ? (
                   <li className="router-space">
                     <Link to="/login">Log In</Link>
@@ -73,6 +76,7 @@ function App() {
               element={<LoginPage value={value}></LoginPage>}
             ></Route>
             <Route path="/signup" element={<SignUpPage></SignUpPage>}></Route>
+            <Route path="/reservations" element={<ReservationOverviewPage></ReservationOverviewPage>}></Route>
           </Routes>
         </BrowserRouter>
       </userContext.Provider>
