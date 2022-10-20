@@ -1,10 +1,9 @@
-import "./App.css";
+import { useState, useEffect } from "react";
+import Navbar from "./components/Navbar";
 import AccountService from "./services/AccountService";
 import { userContext } from "./userContext";
-import { useState, useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from "./components/Navbar";
 
 function App() {
   const [stateUser, setStateUser] = useState(null);

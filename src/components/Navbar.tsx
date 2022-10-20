@@ -5,6 +5,7 @@ import LoginPage from "../pages/LoginPage";
 import SignUpPage from "../pages/SignUpPage";
 import AddCarPage from "../pages/AddCarPage";
 import ReservationOverviewPage from "../pages/ReservationPages/ReservationOverviewPage";
+import "../style/Navbar.css";
 
 interface Props {
     stateUser?: any;
