@@ -10,3 +10,14 @@ export async function getAllReservations() {
         return [];
     }
 }
+
+
+export async function getReservationsByUser(id) {
+    try {
+        const response = await axios.get(api + `/User/${id}`);
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+}

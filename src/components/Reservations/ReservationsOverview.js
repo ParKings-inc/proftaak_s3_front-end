@@ -4,34 +4,34 @@ import { getAllReservations } from "../../services/ReservationService";
 const ReservationOverviewPage = (props) => {
 
     let empty = []
-    console.log(props)
     return (
-        <div>
+
+        < div >
             <ul>
                 <hr />
                 {props.reservations.map(reservatie => {
                     return (
                         <div>
-                            <h3>Reservation:  {' ' + reservatie.id}</h3>
+                            <h3>Reservation:  {' ' + reservatie.Id}</h3>
                             <br />
                             <li>
-                                <b> Reservation spaceID:</b>  {' ' + reservatie.spaceID}
+                                <b> Reservation spaceID:</b>  {' ' + reservatie.SpaceID}
                             </li>
                             <li>
-                                <b> Reservation carID:</b>  {' ' + reservatie.carID}
+                                <b> Reservation carID:</b>  {' ' + reservatie.CarID}
                             </li>
                             <li>
-                                <b>  Reservation arrivalTime:</b>  {' ' + reservatie.arrivalTime}
+                                <b>  Reservation arrivalTime:</b>  {' ' + reservatie.ArrivalTime}
                             </li>
                             <li>
-                                <b> Reservation departureTime:</b> {' ' + reservatie.departureTime}
+                                <b> Reservation departureTime:</b> {' ' + reservatie.DepartureTime}
                             </li>
                             <hr />
                         </div>
                     )
                 })}
             </ul>
-        </div>
+        </div >
     )
 }
 
