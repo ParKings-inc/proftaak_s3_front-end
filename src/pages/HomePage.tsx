@@ -6,10 +6,6 @@ import { Link, Navigate } from "react-router-dom";
 import '../style/HomePage.css';
 
 export default class HomePage extends Component {
-    constructor(props: any) {
-        super(props);
-    }
-
     public override render(): ReactNode {
         return (
             <div className="center bg-purple full-screen vertical-center">
