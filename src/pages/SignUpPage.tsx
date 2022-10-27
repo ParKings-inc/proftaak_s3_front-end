@@ -6,7 +6,7 @@ import AutoLoginButton from "../components/AutoLoginButton";
 export default class SignUpPage extends Component {
     public render(): ReactNode {
         return (
-            <div className="centre">
+            <div className="center">
                 <div className="title">Log In</div>
                 <div className="login-container">
                     <AutoLoginButton text="Sign up with Google" image={GoogleLogo} onClick={() => this.signupGoogle()} />
