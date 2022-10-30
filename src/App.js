@@ -11,6 +11,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //import ParkingspacesOverview from "./pages/ParkingspacesOverview";
 import ReservationOverviewPage from "./pages/ReservationPages/ReservationOverviewPage";
 import ReservationsCreatePage from "./pages/ReservationPages/ReservationsCreatePage";
+import ReservationAvailableSpaces from "./pages/ReservationPages/ReservationAvailableSpaces"
 
 function App() {
   const [stateUser, setStateUser] = useState(null);
@@ -80,6 +81,7 @@ function App() {
             <Route path="/signup" element={<SignUpPage></SignUpPage>}></Route>
             <Route path="/reservations" element={<ReservationOverviewPage></ReservationOverviewPage>}></Route>
             <Route path="/reservations/create" element={<ReservationsCreatePage></ReservationsCreatePage>}></Route>
+            <Route path="/reservations/availableSpaces/:LicensePlate/:ArrivalTime/:DepartureTime/:GarageId" element={<ReservationAvailableSpaces />} />
           </Routes>
         </BrowserRouter>
       </userContext.Provider>

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { getAllReservations } from "../../services/ReservationService";
 
-const ReservationOverviewPage = (props) => {
+const ReservationOverview = (props) => {
 
     let empty = []
     return (
 
-        < div >
+        <div>
             <ul>
                 <hr />
                 {props.reservations.map(reservatie => {
@@ -31,9 +31,9 @@ const ReservationOverviewPage = (props) => {
                     )
                 })}
             </ul>
-        </div >
+        </div>
     )
 }
 
-export default ReservationOverviewPage
+export default ReservationOverview
 

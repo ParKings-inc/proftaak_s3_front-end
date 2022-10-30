@@ -24,7 +24,6 @@ const ReservationOverviewPage = () => {
         navigate("/reservations/create")
     }
 
-
     return (
         <div>
             <button className='btn btn-primary m-2' onClick={createButtonCallback}>Create Reservation</button>
