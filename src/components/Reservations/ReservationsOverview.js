@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react'
 import { getAllReservations } from "../../services/ReservationService";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 import "../../style/ReservationsPage.css";
 
 const ReservationOverviewPage = (props) => {
@@ -7,25 +11,42 @@ const ReservationOverviewPage = (props) => {
     let empty = []
     console.log(props)
     return (
-        <div className='w-65'>
+        <div className='w-80'>
             {props.reservations.map(reservatie => {
+                const arrivalDate = new Date(reservatie.arrivalTime);
+                const arrivalTime = `${arrivalDate.getHours()}:${arrivalDate.getMinutes()}`;
+
+                const date = `${arrivalDate.getDay()}-${arrivalDate.getMonth()}-${arrivalDate.getFullYear()}`
+
+                const departureDate = new Date(reservatie.departureTime);
+                const departureTime = `${departureDate.getHours()}:${departureDate.getMinutes()}`;
+
                 return (
-                    <div>
-                        <h3>Reservation:  {' ' + reservatie.id}</h3>
-                        <br />
-                        <li>
-                            <b> Reservation spaceID:</b>  {' ' + reservatie.spaceID}
-                        </li>
-                        <li>
-                            <b> Reservation carID:</b>  {' ' + reservatie.carID}
-                        </li>
-                        <li>
-                            <b>  Reservation arrivalTime:</b>  {' ' + reservatie.arrivalTime}
-                        </li>
-                        <li>
-                            <b> Reservation departureTime:</b> {' ' + reservatie.departureTime}
-                        </li>
-                        <hr />
+                    <div className='w-100 mb-3'>
+                        <Card className='left-border border-primary'>
+                            <CardContent className='p-3'>
+                                <div className='flex flex-row justify-between'>
+                                    <Typography variant="h5" component="div">
+                                        { arrivalTime + ' - ' + departureTime}
+                                    </Typography>
+                                    <Typography variant="h5" component="div">
+                                        { reservatie.carID }
+                                    </Typography>
+                                </div>
+                                <div className='flex flex-row justify-between'>
+                                    <Typography color="text.secondary">
+                                        { date }
+                                    </Typography>
+
+                                    <Typography color="text.secondary">
+                                        LICENSEPLATE
+                                    </Typography>
+                                </div>
+                                <Typography className='text-warning' sx={{marginTop: 1}} color="text.primary">
+                                    STATUS
+                                </Typography>
+                            </CardContent>
+                        </Card>
                     </div>
                 )
             })}

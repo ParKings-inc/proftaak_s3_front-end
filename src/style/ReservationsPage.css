@@ -32,10 +32,48 @@
     width: auto;
 }
 
+.w-80 {
+    width: 80%;
+}
+
+.w-45 {
+    width: 45%;
+}
+
+.w-47 {
+    width: 47%;
+}
+
+.text-sm {
+    font-size: 13px;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
 .p-2 {
     padding: 2px;
 }
 
 .bg-purple {
     background-color: rebeccapurple;
+}
+
+.left-border {
+    border-radius: 0;
+    border-left: 4px solid red;
+}
+
+.centered {
+    justify-content: center;
+    align-items: center;
+}
+
+.white {
+    color: #FFFFFF;
+}
+
+.scale-2 {
+    transform: scale(1.5);
 }
