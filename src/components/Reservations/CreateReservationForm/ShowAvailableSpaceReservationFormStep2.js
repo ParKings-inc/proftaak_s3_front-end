@@ -11,9 +11,11 @@ const ShowAvailableSpaceReservationFormStep2 = (props) => {
         await postReservation(spaceID, carID, dayjs(ArrivalTime).format('YYYY-MM-DDTHH:mm:00.000Z'), dayjs(DepartureTime).format('YYYY-MM-DDTHH:mm:00.000Z'));
         // navigate("/reservations");
     }
-    if (props.AvailableSpaces != undefined) {
+    if (props.AvailableSpaces != undefined && props.AvailableSpaces != null && Array.isArray(props.AvailableSpaces)) {
+        console.log(props.AvailableSpaces)
         // if the available spaces array is empty return a message to let the user know
         spaces = <div> {props.AvailableSpaces.map(AvailableSpace => {
+
             return (
                 <div key={AvailableSpace.ID}>
                     <h3>Space:  {' ' + AvailableSpace.ID}</h3>

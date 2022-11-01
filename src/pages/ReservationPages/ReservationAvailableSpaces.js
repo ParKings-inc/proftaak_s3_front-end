@@ -12,7 +12,9 @@ const ReservationOverviewPage = () => {
             setAvailableSpaces(await getReservationAvailableSpaces(ArrivalTime, DepartureTime, GarageId))
         }
         AsignValue();
-    })
+    }, [])
+
+
     return (
         <div className="container">
             <h1>Available spaces for time {ArrivalTime + ' - ' + DepartureTime} </h1>
