@@ -56,10 +56,6 @@
     padding: 2px;
 }
 
-.bg-purple {
-    background-color: rebeccapurple;
-}
-
 .left-border {
     border-radius: 0;
     border-left: 4px solid red;
