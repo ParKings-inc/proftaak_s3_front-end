@@ -12,7 +12,7 @@ const ReservationOverviewPage = (props) => {
     console.log(props)
     return (
         <div className='w-80'>
-            {props.reservations.map(reservatie => {
+            {props.reservations.map((reservatie, index) => {
                 const arrivalDate = new Date(reservatie.arrivalTime);
                 const arrivalTime = `${arrivalDate.getHours()}:${arrivalDate.getMinutes()}`;
 
@@ -22,7 +22,7 @@ const ReservationOverviewPage = (props) => {
                 const departureTime = `${departureDate.getHours()}:${departureDate.getMinutes()}`;
 
                 return (
-                    <div className='w-100 mb-3'>
+                    <div className='w-100 mb-3' key={index}>
                         <Card className='left-border border-primary'>
                             <CardContent className='p-3'>
                                 <div className='flex flex-row justify-between'>

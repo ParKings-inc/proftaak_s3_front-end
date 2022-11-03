@@ -3,6 +3,7 @@ import { getAllReservations } from "../../services/ReservationService";
 import ReservationsOverview from "../../components/Reservations/ReservationsOverview";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import "../../style/ReservationsPage.css";
+import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 const ReservationOverviewPage = () => {
@@ -30,13 +31,14 @@ const ReservationOverviewPage = () => {
                 </div>
             </div>
             <div className='flex w-80 justify-between mb-3'>
-                <div className='bg-primary w-47 text-center'>
+                <Link to="/carpage" className='bg-primary w-47 text-center'>
                     <h6 className='text-sm text-white my-1'>MANAGE CARS</h6>
-                </div>
-
-                <div className='bg-success w-47 text-center'>
+                </Link>
+                
+                <Link to="/reservations/create" className='bg-success w-47 text-center decoration-none'>
                     <h6 className='text-sm text-white my-1'>NEW RESERVATION</h6>
-                </div>
+                </Link>
+
             </div>
             <ReservationsOverview reservations={reservations}></ReservationsOverview>
         </div>
