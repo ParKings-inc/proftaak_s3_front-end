@@ -4,7 +4,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import AccountService from "../services/AccountService";
 import { useNavigate } from "react-router-dom";
 
-const SignUpPage = (props) => {
+ var SignUpPage = (props) => {
   const navigate = useNavigate();
 
   const service = new AccountService();
