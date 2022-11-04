@@ -22,6 +22,17 @@ export async function getCarByUserId(id) {
   }
 }
 
+export async function AddCar(data)
+{
+    try{
+        console.log(data)
+        axios.post('https://localhost:7205/api/Cars', data)
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+
 export async function getCarIdByLicensePlate(plate) {
   try {
     const response = await axios.get(
