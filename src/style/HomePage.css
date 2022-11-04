@@ -1,0 +1,63 @@
+.bg-purple {
+    background-color: #788FF6;
+}
+
+.full-screen {
+    width: 100%;
+    height: 95vh;
+}
+
+.vertical-center {
+    justify-content: center;
+}
+
+.button-block {
+    background-color: #FFFFFF;;
+    width: 65%;
+    height: 30%;
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icon {
+    transform: scale(1.9);
+    color: #788FF6;
+}
+
+.button {
+    width: 70%;
+    background-color: #788FF6;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+    color: #FFFFFF;
+    text-align: center;
+    margin: auto;
+    text-decoration: none;
+}
+
+.margin-top-15 {
+    margin-top: 15px;
+}
+
+.margin-bottom-15 {
+    margin-bottom: 15px;
+}
+
+.margin-top-30 {
+    margin-top: 30px;
+}
+
+.margin-bottom-30 {
+    margin-bottom: 30px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.text-dec-none {
+    text-decoration: none;
+}
