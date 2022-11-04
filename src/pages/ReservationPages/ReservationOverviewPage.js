@@ -14,7 +14,7 @@ import { Typography } from '@mui/material';
 
 const ReservationOverviewPage = () => {
     const user = useContext(userContext);
-
+    
     const [reservations, setReservations] = useState([])
     const navigate = useNavigate();
     useEffect(() => {
