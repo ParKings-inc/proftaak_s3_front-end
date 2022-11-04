@@ -18,7 +18,7 @@ const ReservationOverviewPage = () => {
             }
         }
         AsignValue();
-    }, user)
+    }, [user])
 
     function createButtonCallback() {
         navigate("/reservations/create")

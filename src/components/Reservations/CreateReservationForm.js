@@ -1,8 +1,6 @@
-import { TextField, FormControl, InputLabel, OutlinedInput, Button, Stepper, Step, StepLabel, Box, Typography } from '@mui/material';
-import React, { useState } from 'react'
-import ReactDOM from 'react-dom/client'
+
 import CreateReservationFormStep1 from './CreateReservationForm/CreateReservationFormStep1';
-import ShowAvailableSpaceReservationFormStep2 from './CreateReservationForm/ShowAvailableSpaceReservationFormStep2';
+
 
 const steps = ['Choose date and time', 'Check available spaces', 'Confirm reservation'];
 
