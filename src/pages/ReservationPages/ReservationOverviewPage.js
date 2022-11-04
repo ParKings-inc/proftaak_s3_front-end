@@ -1,25 +1,38 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { getAllReservations } from "../../services/ReservationService";
 import ReservationsOverview from "../../components/Reservations/ReservationsOverview";
+
+import { userContext } from '../../userContext';
+import { useNavigate } from 'react-router-dom';
+
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import "../../style/ReservationsPage.css";
 import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { userContext } from '../../userContext';
 
+
 const ReservationOverviewPage = () => {
     const user = useContext(userContext);
 
+    const [reservations, setReservations] = useState([])
+    const { user } = useContext(userContext)
+    const navigate = useNavigate();
     useEffect(() => {
-        async function AsignValue(){
-            setReservations(await getAllReservations(user.user.sub))
+        async function AsignValue() {
+            if (user != null) {
+                setReservations(await getReservationsByUser(user.user.sub))
+            }
         }
         AsignValue();
-    }, [])
-    const [reservations, setReservations] = useState([])
+    }, [user])
 
+    function createButtonCallback() {
+        navigate("/reservations/create")
+    }
 
     return (
+
         <div className='center mt-25'>
             <div className='flex row mb-25'>
                 {/* Change Icon */}
@@ -42,6 +55,7 @@ const ReservationOverviewPage = () => {
                 </Link>
 
             </div>
+
             <ReservationsOverview reservations={reservations}></ReservationsOverview>
         </div>
     )

@@ -6,11 +6,11 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import "../../style/ReservationsPage.css";
 
-const ReservationOverviewPage = (props) => {
+const ReservationOverview = (props) => {
 
     let empty = []
-    console.log(props)
     return (
+
         <div className='w-80'>
             {props.reservations.map((reservatie, index) => {
                 const arrivalDate = new Date(reservatie.ArrivalTime);
@@ -51,15 +51,15 @@ const ReservationOverviewPage = (props) => {
                             <CardContent className='p-3'>
                                 <div className='flex flex-row justify-between mb-10'>
                                     <Typography variant="h5" component="div">
-                                        { arrivalTime + ' - ' + departureTime}
+                                        {arrivalTime + ' - ' + departureTime}
                                     </Typography>
                                     <Typography className="w-35 word-break" variant="h5" component="div">
-                                        Space:{ reservatie.SpaceNumber }, Floor:{ reservatie.SpaceFloor }
+                                        Space:{ reservatie.SpaceNumber }, Floor:{ reservatie.SpaceFloor }            
                                     </Typography>
                                 </div>
                                 <div className='flex flex-row justify-between'>
                                     <Typography color="text.secondary">
-                                        { date }
+                                        {date}
                                     </Typography>
 
                                     <Typography color="text.secondary">
@@ -74,9 +74,10 @@ const ReservationOverviewPage = (props) => {
                     </div>
                 )
             })}
+
         </div>
     )
 }
 
-export default ReservationOverviewPage
+export default ReservationOverview
 
