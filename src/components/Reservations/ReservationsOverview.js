@@ -6,11 +6,11 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import "../../style/ReservationsPage.css";
 
-const ReservationOverviewPage = (props) => {
+const ReservationOverview = (props) => {
 
     let empty = []
-    console.log(props)
     return (
+
         <div className='w-80'>
             {props.reservations.map((reservatie, index) => {
                 const arrivalDate = new Date(reservatie.arrivalTime);
@@ -27,22 +27,22 @@ const ReservationOverviewPage = (props) => {
                             <CardContent className='p-3'>
                                 <div className='flex flex-row justify-between'>
                                     <Typography variant="h5" component="div">
-                                        { arrivalTime + ' - ' + departureTime}
+                                        {arrivalTime + ' - ' + departureTime}
                                     </Typography>
                                     <Typography variant="h5" component="div">
-                                        { reservatie.carID }
+                                        {reservatie.carID}
                                     </Typography>
                                 </div>
                                 <div className='flex flex-row justify-between'>
                                     <Typography color="text.secondary">
-                                        { date }
+                                        {date}
                                     </Typography>
 
                                     <Typography color="text.secondary">
                                         LICENSEPLATE
                                     </Typography>
                                 </div>
-                                <Typography className='text-warning' sx={{marginTop: 1}} color="text.primary">
+                                <Typography className='text-warning' sx={{ marginTop: 1 }} color="text.primary">
                                     STATUS
                                 </Typography>
                             </CardContent>
@@ -50,9 +50,10 @@ const ReservationOverviewPage = (props) => {
                     </div>
                 )
             })}
+
         </div>
     )
 }
 
-export default ReservationOverviewPage
+export default ReservationOverview
 

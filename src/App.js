@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes, useNavigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -12,6 +12,8 @@ import EntranceScannerPage from "./pages/EntranceScannerPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import ParkingspacesOverview from "./pages/ParkingspacesOverview";
 import ReservationOverviewPage from "./pages/ReservationPages/ReservationOverviewPage";
+import ReservationsCreatePage from "./pages/ReservationPages/ReservationsCreatePage";
+import ReservationAvailableSpaces from "./pages/ReservationPages/ReservationAvailableSpaces"
 
 function App() {
   const [stateUser, setStateUser] = useState(null);
@@ -32,17 +34,18 @@ function App() {
     console.log("uitgelogd");
     setStateUser(null);
     service.logoutUser();
+
   }
 
   useEffect(() => {
     async function assignCredential() {
       const user = await service.getUser();
-      if (user !== "" && user !== null) {
+      if (user !== [] && user !== null) {
         setStateUser(await service.parseJwt(user));
       }
     }
     assignCredential();
-  });
+  }, []);
 
   return (
     <div>
@@ -94,6 +97,8 @@ function App() {
             ></Route>
             <Route path="/signup" element={<SignUpPage></SignUpPage>}></Route>
             <Route path="/reservations" element={<ReservationOverviewPage></ReservationOverviewPage>}></Route>
+            <Route path="/reservations/create" element={<ReservationsCreatePage></ReservationsCreatePage>}></Route>
+            <Route path="/reservations/availableSpaces/:LicensePlate/:ArrivalTime/:DepartureTime/:GarageId" element={<ReservationAvailableSpaces />} />
           </Routes>
         </BrowserRouter>
       </userContext.Provider>
