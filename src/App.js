@@ -14,6 +14,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ReservationOverviewPage from "./pages/ReservationPages/ReservationOverviewPage";
 import ReservationsCreatePage from "./pages/ReservationPages/ReservationsCreatePage";
 import ReservationAvailableSpaces from "./pages/ReservationPages/ReservationAvailableSpaces"
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [stateUser, setStateUser] = useState(null);
@@ -81,6 +82,7 @@ function App() {
               </ul>
             </nav>
           </div>
+          <ToastContainer />
           <Routes>
             <Route path="/" element={<HomePage></HomePage>}></Route>
             {stateUser != null ? (
