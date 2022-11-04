@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { getAllReservations } from "../../services/ReservationService";
 import ReservationsOverview from "../../components/Reservations/ReservationsOverview";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import "../../style/ReservationsPage.css";
 import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import { userContext } from '../../userContext';
 
 const ReservationOverviewPage = () => {
+    const user = useContext(userContext);
 
     useEffect(() => {
         async function AsignValue(){
-            setReservations( await getAllReservations())
+            setReservations(await getAllReservations(user.user.sub))
         }
         AsignValue();
     }, [])
