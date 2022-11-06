@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { getAllReservations } from "../../services/ReservationService";
+import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -8,29 +9,34 @@ import "../../style/ReservationsPage.css";
 
 const ReservationOverview = (props) => {
 
+    function ToDetailsPage(reservation) {
+        navigate('/reservation/Details/', { state: { reservation: [reservation] } })
+    }
+    const navigate = useNavigate();
     let empty = []
     return (
 
         <div className='w-80'>
-            {props.reservations.map((reservatie, index) => {
-                const arrivalDate = new Date(reservatie.arrivalTime);
-                const arrivalTime = `${arrivalDate.getHours()}:${arrivalDate.getMinutes()}`;
+            {props.reservations.map((reservation, index) => {
+                const arrivalDate = new Date(reservation.ArrivalTime);
+                const arrivalTime = `${arrivalDate.getHours()}:${String(arrivalDate.getMinutes()).padStart(2, '0')}`;
 
                 const date = `${arrivalDate.getDay()}-${arrivalDate.getMonth()}-${arrivalDate.getFullYear()}`
 
-                const departureDate = new Date(reservatie.departureTime);
-                const departureTime = `${departureDate.getHours()}:${departureDate.getMinutes()}`;
+                const departureDate = new Date(reservation.DepartureTime);
+                const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
 
                 return (
                     <div className='w-100 mb-3' key={index}>
-                        <Card className='left-border border-primary'>
+                        <Card onClick={() => ToDetailsPage(reservation)} className='left-border border-primary'>
                             <CardContent className='p-3'>
                                 <div className='flex flex-row justify-between'>
+                                    {/* Maybe add "Arrival time - End time" in front more information. */}
                                     <Typography variant="h5" component="div">
                                         {arrivalTime + ' - ' + departureTime}
                                     </Typography>
                                     <Typography variant="h5" component="div">
-                                        {reservatie.carID}
+                                        {reservation.carID}
                                     </Typography>
                                 </div>
                                 <div className='flex flex-row justify-between'>

@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import ShowAvailableSpaceReservationFormStep2 from '../../components/Reservations/CreateReservationForm/ShowAvailableSpaceReservationFormStep2';
-import { getReservationAvailableSpaces } from '../../services/ReservationService';
+import ShowAvailableSpaceReservationFormStep2 from '../../../components/Reservations/Create/CreateReservationForm/ShowAvailableSpaceReservationFormStep2';
+import { getReservationAvailableSpaces } from '../../../services/ReservationService';
 import { Button } from '@mui/material';
-const ReservationOverviewPage = () => {
+
+const ReservationAvailableSpaces = () => {
 
     const { LicensePlate, ArrivalTime, DepartureTime, GarageId } = useParams()
     const [AvailableSpaces, setAvailableSpaces] = useState([]);
@@ -23,4 +24,4 @@ const ReservationOverviewPage = () => {
     )
 }
 
-export default ReservationOverviewPage
+export default ReservationAvailableSpaces

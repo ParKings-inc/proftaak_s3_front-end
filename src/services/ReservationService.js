@@ -28,7 +28,7 @@ export async function getReservationAvailableSpaces(
   try {
     const response = await axios.get(
       api +
-        `Spaces/reservations/create/getavailableSpace/${arrivalTime}/${DepartureTime}/${garageId}`
+      `Spaces/reservations/create/getavailableSpace/${arrivalTime}/${DepartureTime}/${garageId}`
     );
     return response.data;
   } catch (error) {
@@ -37,10 +37,30 @@ export async function getReservationAvailableSpaces(
 }
 
 export async function postReservation(data) {
-  console.log("geteget " + data);
   try {
     const response = await axios.post(api + `Reservations`, data);
-    console.log("from service " + response);
+
+    return response.data;
+  } catch (error) {
+    console.log(error.response.status);
+    return error.response.status;
+  }
+}
+
+export async function putReservation(reservationbody) {
+  try {
+    const response = await axios.put(api + `Reservations/${reservationbody.Id}`, reservationbody)
+    console.log(response.data);
+
+  } catch (error) {
+    return error.response.status;
+  }
+
+}
+
+export async function deleteReservation(reservationId) {
+  try {
+    const response = await axios.delete(api + `Reservations/${reservationId}`)
     return response.data;
   } catch (error) {
     return [];
