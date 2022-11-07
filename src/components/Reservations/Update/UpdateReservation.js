@@ -75,7 +75,7 @@ const UpdateReservation = (props) => {
                     try {
                         //update instead of post
                         if (await putReservation(reservationbody) !== 404) {
-                            alert("reservation has been made ");
+                            alert("reservation has been updated");
                         }
                         else {
                             alert("You already have a reservation around this time for this license plate");
@@ -86,7 +86,7 @@ const UpdateReservation = (props) => {
                     navigate("/reservations");
                 } else {
                     alert("No available spaces for this time " + AllSpaces.length);
-                    console.log("Not a valid reservation");
+                    console.log("Not a valid reservation " + AllSpaces);
                 }
             }
             else {   // update reservation without question. The space will remain the same.
@@ -110,7 +110,7 @@ const UpdateReservation = (props) => {
                 navigate("/reservations");
             }
         }
-        else {
+        else { 
             alert("Make sure all fields are answered.")
         }
         // navigate("/reservations");

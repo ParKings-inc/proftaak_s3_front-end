@@ -6,8 +6,9 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import "../../style/ReservationsPage.css";
-
+import dayjs from "dayjs";
 const ReservationOverview = (props) => {
+
 
     function ToDetailsPage(reservation) {
         navigate('/reservation/Details/', { state: { reservation: [reservation] } })
@@ -20,9 +21,7 @@ const ReservationOverview = (props) => {
             {props.reservations.map((reservation, index) => {
                 const arrivalDate = new Date(reservation.ArrivalTime);
                 const arrivalTime = `${arrivalDate.getHours()}:${String(arrivalDate.getMinutes()).padStart(2, '0')}`;
-
-                const date = `${arrivalDate.getDay()}-${arrivalDate.getMonth()}-${arrivalDate.getFullYear()}`
-
+                const date = dayjs(reservation.ArrivalTime).format("DD-MM-YYYY")
                 const departureDate = new Date(reservation.DepartureTime);
                 const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
 
