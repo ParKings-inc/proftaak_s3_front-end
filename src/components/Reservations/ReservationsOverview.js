@@ -14,10 +14,10 @@ const ReservationOverview = (props) => {
         <div className='w-80'>
             {props.reservations.map((reservatie, index) => {
                 const arrivalDate = new Date(reservatie.ArrivalTime);
+                const arrivalDateString = arrivalDate.toLocaleDateString();
+                
                 const arrivalTime = `${arrivalDate.getHours()}:${arrivalDate.getMinutes()}`;
-
-                const date = `${arrivalDate.getDay()}-${arrivalDate.getMonth()}-${arrivalDate.getFullYear()}`
-
+            
                 const departureDate = new Date(reservatie.DepartureTime);
                 const departureTime = `${departureDate.getHours()}:${departureDate.getMinutes()}`;
                 
@@ -59,7 +59,7 @@ const ReservationOverview = (props) => {
                                 </div>
                                 <div className='flex flex-row justify-between'>
                                     <Typography color="text.secondary">
-                                        {date}
+                                        { arrivalDateString }
                                     </Typography>
 
                                     <Typography color="text.secondary">

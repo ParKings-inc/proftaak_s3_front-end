@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { getAllReservations } from "../../services/ReservationService";
+import { getReservationsByUser } from "../../services/ReservationService";
 import ReservationsOverview from "../../components/Reservations/ReservationsOverview";
 
 import { userContext } from '../../userContext';
@@ -9,14 +9,13 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import "../../style/ReservationsPage.css";
 import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
-import { userContext } from '../../userContext';
+
 
 
 const ReservationOverviewPage = () => {
     const user = useContext(userContext);
-
+    
     const [reservations, setReservations] = useState([])
-    const { user } = useContext(userContext)
     const navigate = useNavigate();
     useEffect(() => {
         async function AsignValue() {
@@ -31,12 +30,16 @@ const ReservationOverviewPage = () => {
         navigate("/reservations/create")
     }
 
+    function goToHome(){
+        navigate("/");
+    }
+
     return (
 
         <div className='center mt-25'>
             <div className='flex row mb-25'>
-                {/* Change Icon */}
-                <div className='w-auto bg-primary px-1 rounded flex centered'>
+                
+                <div onClick={goToHome} className='w-auto bg-primary px-1 rounded flex centered'>
                     {/* <h5 className='m-0 text-white'>X</h5> */}
                     <KeyboardArrowLeftIcon className='scale-2 white' />
                 </div>
