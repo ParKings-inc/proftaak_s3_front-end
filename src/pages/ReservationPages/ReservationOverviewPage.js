@@ -30,12 +30,16 @@ const ReservationOverviewPage = () => {
         navigate("/reservations/create")
     }
 
+    function goToHome(){
+        navigate("/");
+    }
+
     return (
 
         <div className='center mt-25'>
             <div className='flex row mb-25'>
-                {/* Change Icon */}
-                <div className='w-auto bg-primary px-1 rounded flex centered'>
+                
+                <div onClick={goToHome} className='w-auto bg-primary px-1 rounded flex centered'>
                     {/* <h5 className='m-0 text-white'>X</h5> */}
                     <KeyboardArrowLeftIcon className='scale-2 white' />
                 </div>
