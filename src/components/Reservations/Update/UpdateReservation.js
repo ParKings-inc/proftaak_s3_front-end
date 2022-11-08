@@ -21,17 +21,21 @@ import {
 } from "../../../services/CarService";
 import { putReservation } from "../../../services/ReservationService";
 import { getReservationAvailableSpaces } from "../../../services/ReservationService";
+import { width } from "@mui/system";
 
 const UpdateReservation = (props) => {
     const [LicensePlate, setLicensePlate] = useState("");
     const [ArrivalTime, setArrivalTime] = useState(null);
     const [DepartureTime, setDepartureTime] = useState(null);
     const [TotalLicensePlate, setTotalLicensePlate] = useState([]);
+    const [LicensePlateLabel, setLicensePlateLabel] = useState(null);
     const { user } = useContext(userContext);
     const navigate = useNavigate();
     let reservation = props.reservation;
     useEffect(() => {
+
         async function AsignValue() {
+            setLicensePlate(reservation.Kenteken);
             setArrivalTime(reservation.ArrivalTime);
             setDepartureTime(reservation.DepartureTime);
             if (user !== null) {
@@ -42,8 +46,8 @@ const UpdateReservation = (props) => {
     }, [user]);
 
     useEffect(() => {
-        if (TotalLicensePlate.length > 0)
-            setLicensePlate(TotalLicensePlate[0].kenteken);
+        // if (TotalLicensePlate.length > 0)
+        // setLicensePlate(TotalLicensePlate[0].kenteken);
     }, [TotalLicensePlate]);
 
     async function updateReservationClick(e) {
@@ -59,12 +63,12 @@ const UpdateReservation = (props) => {
                 let AllSpaces = await getReservationAvailableSpaces(
                     ArrivalTime,
                     DepartureTime,
-                    1
+                    reservation.GarageID
                 );
 
                 if (AllSpaces.length > 0) {
                     let reservationbody = {
-                        Id: reservation.Id,
+                        Id: reservation.ReservationID,
                         spaceID: AllSpaces[0].ID,
                         carID: car,
                         Status: "Pending",
@@ -91,9 +95,12 @@ const UpdateReservation = (props) => {
             }
             else {   // update reservation without question. The space will remain the same.
                 //update 
+                console.log("Look Im here: ")
+                console.log(reservation)
+
                 let reservationbody = {
-                    Id: reservation.Id,
-                    spaceID: reservation.spaceID,
+                    Id: reservation.ReservationID,
+                    spaceID: reservation.SpaceID,
                     carID: car,
                     Status: "Pending",
                     ArrivalTime: ArrivalTime,
@@ -110,11 +117,13 @@ const UpdateReservation = (props) => {
                 navigate("/reservations");
             }
         }
-        else { 
+        else {
             alert("Make sure all fields are answered.")
         }
         // navigate("/reservations");
     }
+
+    console.log(reservation);
 
 
     return (
@@ -130,6 +139,7 @@ const UpdateReservation = (props) => {
                         label="LicensePlate"
                         onChange={(newValue) => {
                             console.log(newValue);
+                            console.log(reservation);
                             setLicensePlate(newValue.target.value);
                         }}
                     >
@@ -200,7 +210,7 @@ const UpdateReservation = (props) => {
                     </Button>
                 </FormControl> */}
             </div>
-        </div>
+        </div >
 
     );
 };

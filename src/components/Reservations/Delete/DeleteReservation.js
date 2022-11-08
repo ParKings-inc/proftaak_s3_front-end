@@ -31,7 +31,7 @@ const DeleteReservation = (props) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     async function CancelReservation() {
-        await deleteReservation(reservation.Id);
+        await deleteReservation(reservation.ReservationID);
         // Make into toaster
         alert("Your reservation has been canceled.");
         navigate("/reservations");

@@ -28,8 +28,10 @@ const CreateReservationFormStep1 = () => {
   const [DepartureTime, setDepartureTime] = useState(null);
   const [TotalLicensePlate, setTotalLicensePlate] = useState([]);
   const [TotalGarage, setTotalGarage] = useState([]);
+  const [GarageID, setGarageID] = useState([]);
   const { user } = useContext(userContext);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     async function AsignGarages() {
@@ -42,22 +44,26 @@ const CreateReservationFormStep1 = () => {
     }
     AsignValue();
     AsignGarages();
+
   }, [user]);
 
   useEffect(() => {
     if (TotalLicensePlate.length > 0) setLicensePlate(TotalLicensePlate[0].kenteken);
-    if (TotalGarage.length > 0) setLicensePlate(TotalGarage[0].Name);
+    if (TotalGarage.length > 0) setGarage(TotalGarage[0].Name);
+
   }, [TotalLicensePlate, TotalGarage]);
 
-  async function ClaimSpot(e) {
+  async function ClaimSpot(e, garageId) {
 
     if (ArrivalTime !== null && DepartureTime !== null && LicensePlate !== null) {
       e.preventDefault();
+      console.log("claimspot " + Garage);
       let AllSpaces = await getReservationAvailableSpaces(
         ArrivalTime,
         DepartureTime,
         Garage
       );
+
       let car = await getCarIdByLicensePlate(LicensePlate);
 
       if (AllSpaces.length > 0) {
@@ -108,14 +114,14 @@ const CreateReservationFormStep1 = () => {
             value={Garage}
             label="Garage"
             onChange={(newValue) => {
-              console.log(newValue);
               setGarage(newValue.target.value);
+              setGarageID(Garage);
+              console.log(GarageID);
             }}
           >
             {TotalGarage.map((garage) => {
-              console.log(garage)
               return (
-                <MenuItem key={garage.name} value={garage.name}>
+                <MenuItem key={garage.name} value={garage.id}>
                   {garage.name}
                 </MenuItem>
               );
@@ -195,7 +201,7 @@ const CreateReservationFormStep1 = () => {
           <Button
             variant="contained"
             type="submit"
-            onClick={ClaimSpot}
+            onClick={(event) => ClaimSpot(event, GarageID)}
             color="success"
           >
             Next

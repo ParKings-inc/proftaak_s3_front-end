@@ -21,15 +21,13 @@ export async function getReservationsByUser(id) {
   }
 }
 
-export async function getReservationAvailableSpaces(
-  arrivalTime,
-  DepartureTime,
-  garageId
-) {
+export async function getReservationAvailableSpaces(ArrivalTime, DepartureTime, garageId) {
+  console.log("from service " + garageId)
+  ArrivalTime = dayjs(ArrivalTime).format("YYYY-MM-DDTHH:mm:00.000Z")
+  DepartureTime = dayjs(DepartureTime).format("YYYY-MM-DDTHH:mm:00.000Z")
   try {
     const response = await axios.get(
-      api +
-      `Spaces/reservations/create/getavailableSpace/${arrivalTime}/${DepartureTime}/${garageId}`
+      encodeURI(api + `Spaces/reservations/create/getavailableSpace/${ArrivalTime}/${DepartureTime}/${garageId}`)
     );
     return response.data;
   } catch (error) {
@@ -64,9 +62,9 @@ export async function putReservation(reservationbody) {
 
 }
 
-export async function deleteReservation(reservationId) {
+export async function deleteReservation(id) {
   try {
-    const response = await axios.delete(api + `Reservations/${reservationId}`)
+    const response = await axios.delete(api + `Reservations/${id}`)
     return response.data;
   } catch (error) {
     return [];

@@ -11,9 +11,9 @@ import dayjs from "dayjs";
 const ReservationOverview = (props) => {
 
     useEffect(() => {
-     async function getReservationSpace(id) {
-        await getSpaceById(id);
-    }
+        async function getReservationSpace(id) {
+            await getSpaceById(id);
+        }
     });
 
     function ToDetailsPage(reservation) {
@@ -30,9 +30,10 @@ const ReservationOverview = (props) => {
                 const date = dayjs(reservation.ArrivalTime).format("DD-MM-YYYY")
                 const departureDate = new Date(reservation.DepartureTime);
                 const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
-                 getReservationSpace(reservation.SpaceID) 
-                {/* let space = getSpaceById(reservation.SpaceID); */}
-                console.log(space);
+                {/* getReservationSpace(reservation.SpaceID)  */ }
+                {/* let space = getSpaceById(reservation.SpaceID); */ }
+                {/* console.log(space); */ }
+                {/* console.log(reservation) */ }
                 return (
                     <div className='w-100 mb-3' key={index}>
                         <Card onClick={() => ToDetailsPage(reservation)} className='left-border border-primary'>
@@ -40,23 +41,33 @@ const ReservationOverview = (props) => {
                                 <div className='flex flex-row justify-between'>
                                     {/* Maybe add "Arrival time - End time" in front more information. */}
                                     <Typography variant="h5" component="div">
-                                        {arrivalTime + ' - ' + departureTime}
+                                        {console.log(reservation)}
+                                        {reservation.GarageName}
                                     </Typography>
-                                    <Typography variant="h5" component="div">
-                                        {reservation.carID}
-                                    </Typography>
+
                                 </div>
                                 <div className='flex flex-row justify-between'>
                                     <Typography color="text.secondary">
-                                        {date}
+                                        <b>Date:</b> {date}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                        <b>Time:</b> {arrivalTime + ' - ' + departureTime}
+                                    </Typography>
+                                </div>
+
+                                <div className='flex flex-row justify-between'>
+                                    <Typography color="text.secondary">
+                                        <b>Space:</b> {reservation.SpaceID}-{reservation.SpaceFloor}-{reservation.SpaceRow}
                                     </Typography>
 
+                                </div>
+                                <div className='flex flex-row justify-between'>
                                     <Typography color="text.secondary">
-                                        LICENSEPLATE
+                                        <b>License plate:</b> {reservation.Kenteken}
                                     </Typography>
                                 </div>
                                 <Typography className='text-warning' sx={{ marginTop: 1 }} color="text.primary">
-                                    STATUS
+                                    {reservation.Status}
                                 </Typography>
                             </CardContent>
                         </Card>

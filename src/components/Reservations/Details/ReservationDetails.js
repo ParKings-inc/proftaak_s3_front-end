@@ -28,7 +28,7 @@ const ReservationDetails = () => {
             <div className="input-group mb-3">
                 <FormControl fullWidth sx={{ m: 1 }}>
                     Garage:
-                    <TextField value={"Garage"} InputProps={{
+                    <TextField value={reservation.GarageName} InputProps={{
                         readOnly: true,
                     }}></TextField>
                 </FormControl>
@@ -36,7 +36,7 @@ const ReservationDetails = () => {
             <div className="input-group mb-3">
                 <FormControl fullWidth sx={{ m: 1 }}>
                     LicensePlate:
-                    <TextField value={"License plate"} InputProps={{
+                    <TextField value={reservation.Kenteken} InputProps={{
                         readOnly: true,
                     }}></TextField>
                 </FormControl>
@@ -44,7 +44,7 @@ const ReservationDetails = () => {
             <div className="input-group mb-3">
                 <FormControl fullWidth sx={{ m: 1 }}>
                     Parkingspace:
-                    <TextField value={"space"} InputProps={{
+                    <TextField value={reservation.SpaceID + "-" + reservation.SpaceFloor + "-" + reservation.SpaceRow} InputProps={{
                         readOnly: true,
                     }}></TextField>
                 </FormControl>
