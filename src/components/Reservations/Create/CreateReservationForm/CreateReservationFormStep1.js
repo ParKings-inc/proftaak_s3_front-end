@@ -19,28 +19,35 @@ import {
 } from "../../../../services/CarService";
 import { postReservation } from "../../../../services/ReservationService";
 import { getReservationAvailableSpaces } from "../../../../services/ReservationService";
+import { getAllGarage } from "../../../../services/GarageService"
 
 const CreateReservationFormStep1 = () => {
   const [LicensePlate, setLicensePlate] = useState("");
+  const [Garage, setGarage] = useState(null);
   const [ArrivalTime, setArrivalTime] = useState(null);
   const [DepartureTime, setDepartureTime] = useState(null);
   const [TotalLicensePlate, setTotalLicensePlate] = useState([]);
+  const [TotalGarage, setTotalGarage] = useState([]);
   const { user } = useContext(userContext);
   const navigate = useNavigate();
 
   useEffect(() => {
+    async function AsignGarages() {
+      setTotalGarage(await getAllGarage())
+    }
     async function AsignValue() {
       if (user !== null) {
         setTotalLicensePlate(await getCarByUserId(user.sub));
       }
     }
     AsignValue();
+    AsignGarages();
   }, [user]);
 
   useEffect(() => {
-    if (TotalLicensePlate.length > 0)
-      setLicensePlate(TotalLicensePlate[0].kenteken);
-  }, [TotalLicensePlate]);
+    if (TotalLicensePlate.length > 0) setLicensePlate(TotalLicensePlate[0].kenteken);
+    if (TotalGarage.length > 0) setLicensePlate(TotalGarage[0].Name);
+  }, [TotalLicensePlate, TotalGarage]);
 
   async function ClaimSpot(e) {
 
@@ -49,7 +56,7 @@ const CreateReservationFormStep1 = () => {
       let AllSpaces = await getReservationAvailableSpaces(
         ArrivalTime,
         DepartureTime,
-        1
+        Garage
       );
       let car = await getCarIdByLicensePlate(LicensePlate);
 
@@ -91,7 +98,31 @@ const CreateReservationFormStep1 = () => {
 
   return (
     <div className="row justify-content-md-center">
-
+      <div className="input-group mb-3">
+        <FormControl fullWidth sx={{ m: 1 }}>
+          <InputLabel id="demo-simple-select-label">Garage</InputLabel>
+          <Select
+            labelId="Garage"
+            id="Garage"
+            name="Garage"
+            value={Garage}
+            label="Garage"
+            onChange={(newValue) => {
+              console.log(newValue);
+              setGarage(newValue.target.value);
+            }}
+          >
+            {TotalGarage.map((garage) => {
+              console.log(garage)
+              return (
+                <MenuItem key={garage.name} value={garage.name}>
+                  {garage.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      </div>
       <div className="input-group mb-3">
         <FormControl fullWidth sx={{ m: 1 }}>
           <InputLabel id="demo-simple-select-label">LicensePlate</InputLabel>

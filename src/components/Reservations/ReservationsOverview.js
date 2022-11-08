@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getAllReservations } from "../../services/ReservationService";
+import { getSpaceById } from "../../services/SpaceService";
 import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -9,6 +10,11 @@ import "../../style/ReservationsPage.css";
 import dayjs from "dayjs";
 const ReservationOverview = (props) => {
 
+    useEffect(() => {
+     async function getReservationSpace(id) {
+        await getSpaceById(id);
+    }
+    });
 
     function ToDetailsPage(reservation) {
         navigate('/reservation/Details/', { state: { reservation: [reservation] } })
@@ -24,7 +30,9 @@ const ReservationOverview = (props) => {
                 const date = dayjs(reservation.ArrivalTime).format("DD-MM-YYYY")
                 const departureDate = new Date(reservation.DepartureTime);
                 const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
-
+                 getReservationSpace(reservation.SpaceID) 
+                {/* let space = getSpaceById(reservation.SpaceID); */}
+                console.log(space);
                 return (
                     <div className='w-100 mb-3' key={index}>
                         <Card onClick={() => ToDetailsPage(reservation)} className='left-border border-primary'>
