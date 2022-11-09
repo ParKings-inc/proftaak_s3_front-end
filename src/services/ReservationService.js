@@ -28,7 +28,7 @@ export async function getReservationAvailableSpaces(
   try {
     const response = await axios.get(
       api +
-        `Spaces/reservations/create/getavailableSpace/${arrivalTime}/${DepartureTime}/${garageId}`
+      `Spaces/reservations/create/getavailableSpace/${arrivalTime}/${DepartureTime}/${garageId}`
     );
     return response.data;
   } catch (error) {
@@ -37,12 +37,18 @@ export async function getReservationAvailableSpaces(
 }
 
 export async function postReservation(data) {
-  console.log("geteget " + data);
   try {
-    const response = await axios.post(api + `Reservations`, data);
-    console.log("from service " + response);
-    return response.data;
+    console.log(data.DepartureTime - data.ArrivalTime)
+    if (data.DepartureTime - data.ArrivalTime >= 1800000) {
+      const response = await axios.post(api + `Reservations`, data);
+      console.log("from service " + response);
+      return response.data;
+    } else {
+      return "Reservation must be longer than 30 minutes";
+    }
+
   } catch (error) {
-    return [];
+    console.log(error)
+    return error.response.data;
   }
 }

@@ -78,8 +78,20 @@ const CreateReservationFormStep1 = () => {
               progress: undefined,
               theme: "colored"
             })
+            navigate("/reservations");
+          } else {
+            toast.error(response, {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored"
+            })
           }
-          navigate("/reservations");
+
         } catch (error) {
           toast.error("Reservation Failed", {
             position: "top-right",
@@ -127,7 +139,7 @@ const CreateReservationFormStep1 = () => {
     navigate("/reservations");
   }
 
-  
+
 
   return (
     <>
@@ -167,7 +179,7 @@ const CreateReservationFormStep1 = () => {
                   ampm={false}
                   value={ArrivalTime}
                   onChange={(newValue) => {
-                    setArrivalTime(newValue);         
+                    setArrivalTime(newValue);
                   }}
                   minDateTime={dayjs(new Date())}
                   required
@@ -185,6 +197,7 @@ const CreateReservationFormStep1 = () => {
                   value={DepartureTime == null ? ArrivalTime : DepartureTime}
                   onChange={(newValue) => {
                     setDepartureTime(newValue);
+                    console.log(newValue - ArrivalTime);
                   }}
                   minDateTime={ArrivalTime}
                   required
