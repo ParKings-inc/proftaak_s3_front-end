@@ -53,10 +53,10 @@ const AddCarPage = () => {
     <button className='add-button' onClick={OnSubmit}>new license</button>
     </p>
     <h6 className='center mb-10 mt-10'>Your cars:</h6></div>
-    <p>{cars.map((c) => <p className='table-container' key={c.id}>
-      <p className='list-item'>{c.kenteken}</p>
+    <div>{cars.map((c) => <p className='table-container' key={c.id}>
+      <b className='list-item'>{c.kenteken}</b>
       <button className='delete-button' onClick={() => {DeleteCar(c.id)}}>delete</button>
-      </p>)}</p>
+      </p>)}</div>
     </div>
     
   )

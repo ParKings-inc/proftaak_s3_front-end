@@ -24,7 +24,7 @@ export async function getCarByUserId(id) {
 
 export async function AddCar(data)
 {
-  if(/*(DoesLicenseExist(data.kenteken) == false) &&*/ (data.kenteken.length > 0)){
+  if(/*(DoesLicenseExist(data.kenteken) == false) &&*/ (data.kenteken.length > 0) && (data.kenteken.length <20)){
     console.log('succes');
     try{
         console.log(data);
