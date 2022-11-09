@@ -62,7 +62,7 @@ export async function putReservation(reservationbody) {
     reservationbody.DepartureTime = dayjs(reservationbody.DepartureTime).format("YYYY-MM-DDTHH:mm:00.000Z")
     const response = await axios.put(api + `Reservations/${reservationbody.Id}`, reservationbody)
     console.log(response.data);
-
+    return "success";
   } catch (error) {
     return error.response.data;
   }
