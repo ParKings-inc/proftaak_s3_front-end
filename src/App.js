@@ -68,9 +68,6 @@ function App() {
                   </>
                 ) : (
                   <>
-                    <li>
-                      <Link to="/carpage">car page</Link>
-                    </li>
                     <li className="router-space">
                       <button id="logout" onClick={logoutUser}>
                         Log Out
