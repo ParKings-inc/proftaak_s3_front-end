@@ -1,15 +1,4 @@
-import React from "react";
-import { BrowserRouter, Link, Route, Routes, useNavigate } from "react-router-dom";
-
-import HomePage from "../pages/HomePage";
-import LoginPage from "../pages/LoginPage";
-import SignUpPage from "../pages/SignUpPage";
-import ReservationOverviewPage from "../pages/ReservationPages/ReservationOverviewPage";
-import AddCarPage from "../pages/AddCarPage";
-
-import AccountService from "../services/AccountService";
-import { userContext } from "../userContext";
-import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap";
 
@@ -17,104 +6,53 @@ import "bootstrap/dist/js/bootstrap";
 
 const NavigationBar = (props) => {
 
-    const [stateUser, setStateUser] = useState(null);
-  const service = new AccountService();
-  const value = {
-    user: stateUser,
-    userLogin: loginUser,
-    userLogout: logoutUser,
-  };
-
-  function loginUser(stateCredentials) {
-    console.log("PASSED IN USER");
-    console.log(stateCredentials);
-    setStateUser(stateCredentials);
-  }
-
-  function logoutUser() {
-    console.log("uitgelogd");
-    setStateUser(null);
-    service.logoutUser();
-  }
-
-  useEffect(() => {
-    async function assignCredential() {
-      const user = await service.getUser();
-      if (user !== "" && user !== null) {
-        setStateUser(await service.parseJwt(user));
-      }
-    }
-    assignCredential();
-  });
-
   return (    
     <>
-    <userContext.Provider value={value}>
-        <BrowserRouter>
-        <div class="collapse" id="navbarToggleExternalContent">
-            <div class="bg-dark p-4">
-                <h5 class="text-white h4">Collapsed content</h5>
-                <span class="text-muted">Toggleable via the navbar brand.</span>
-            </div>
-        </div>
-            
-                <div class="collapse" id="navbarToggleExternalContent">
-                    <div class="navbar navbar-dark bg-primary p-4">
-
-
-                        <span><Link to="/"><span class="text-white h4">Home</span></Link></span>
-                        <span><Link to="/"><span class="text-white h4">Home</span></Link></span>
-                        
-                        <Link to="/reservations">
-                            <span class="text-white h4">Reservations</span>
-                        </Link>
-                        {stateUser == null ? (
-                        <>
-                            <Link to="/login">
-                                <span class="text-white h4">Log In</span>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary p-4">
+            <div className="container-fluid">
+                <a className="navbar-brand text-white h2 fw-bolder  fs-2" href="/">Parkings</a>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">                                
+                        <li className="nav-item p-3 fs-5">
+                            <Link to="/">
+                                <p className="text-white h5">Home</p>
                             </Link>
+                        </li>
+                        <li className="nav-item p-3 fs-5">
+                            <Link to="/reservations">
+                                <p className="text-white h5">Reservations</p>
+                            </Link>
+                        </li>
+
+                        {props.value == null ? (
+                        <>
+                        <li className="nav-item p-3 fs-5">
+                            <Link to="/login">
+                                <p className="text-white h5">Log In</p>
+                            </Link>
+                        </li>
                         </>
                         ) : (
                         <>
+                        <li className="nav-item p-3 fs-5">
                             <Link to="/carpage">
-                                <span class="text-white h4">Car page</span>
+                                <p className="text-white h5">Car page</p>
                             </Link>
-                            <button class="navbar navbar-dark bg-primary p-4" id="logout" onClick={logoutUser}>
-                                <span class="text-white h4">Log Out</span>
-                            </button>
+                        </li>                        
+                        <li className="nav-item p-3 fs-5">
+                            <Link to="/" onClick={props.logout}>
+                                <p className="text-white h5">Log out</p>
+                            </Link>
+                        </li>
                         </>
                         )}
-
-
-
-
-                    </div>
+                    </ul>
                 </div>
-                <nav class="navbar navbar-dark bg-primary">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </nav>
-            
-            <Routes>
-                <Route path="/" element={<HomePage></HomePage>}></Route>
-                {stateUser != null ? (
-                <Route
-                    path="/carpage"
-                    element={<AddCarPage></AddCarPage>}
-                ></Route>
-                ) : (
-                <></>
-                )}
-                <Route
-                path="/login"
-                element={<LoginPage value={value}></LoginPage>}
-                ></Route>
-                <Route path="/signup" element={<SignUpPage></SignUpPage>}></Route>
-                <Route path="/reservations" element={<ReservationOverviewPage></ReservationOverviewPage>}></Route>
-            </Routes>
-        </BrowserRouter>
-    </userContext.Provider>
+            </div>
+        </nav>
     </>
   );
 };
