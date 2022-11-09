@@ -22,6 +22,8 @@ import {
 import { putReservation } from "../../../services/ReservationService";
 import { getReservationAvailableSpaces } from "../../../services/ReservationService";
 import { width } from "@mui/system";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UpdateReservation = (props) => {
     const [LicensePlate, setLicensePlate] = useState("");
@@ -50,6 +52,8 @@ const UpdateReservation = (props) => {
         // setLicensePlate(TotalLicensePlate[0].kenteken);
     }, [TotalLicensePlate]);
 
+
+
     async function updateReservationClick(e) {
         // check if all fields are answered
         if (ArrivalTime !== null && DepartureTime !== null && LicensePlate !== null) {
@@ -77,26 +81,25 @@ const UpdateReservation = (props) => {
                     };
 
                     try {
+                        var response = await putReservation(reservationbody)
                         //update instead of post
-                        if (await putReservation(reservationbody) !== 404) {
-                            alert("reservation has been updated");
+                        if (response == "success") {
+                            toasrMessage("success", "Reservation updated successfully");
+                            navigate("/reservations");
                         }
                         else {
-                            alert("You already have a reservation around this time for this license plate");
+                            toasrMessage("error", response);
                         }
                     } catch (error) {
-                        console.log(error);
+                        toasrMessage("error", error.response.data);
                     }
-                    navigate("/reservations");
+
                 } else {
-                    alert("No available spaces for this time " + AllSpaces.length);
-                    console.log("Not a valid reservation " + AllSpaces);
+                    toasrMessage("error", "No spaces available for this time");
                 }
             }
             else {   // update reservation without question. The space will remain the same.
                 //update 
-                console.log("Look Im here: ")
-                console.log(reservation)
 
                 let reservationbody = {
                     Id: reservation.ReservationID,
@@ -109,7 +112,7 @@ const UpdateReservation = (props) => {
                 try {
                     await putReservation(reservationbody);
                     console.log(reservationbody);
-                    alert("reservation has been updated");
+                    toasrMessage("success", "Reservation has been updated");
                 } catch (error) {
                     console.log(error)
                 }
@@ -122,6 +125,34 @@ const UpdateReservation = (props) => {
         }
         // navigate("/reservations");
     }
+
+    function toasrMessage(type, message) {
+        if (type == "error") {
+            toast.error(message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+            })
+        } else {
+            toast.success(message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+            })
+        }
+    }
+
+
 
     console.log(reservation);
 

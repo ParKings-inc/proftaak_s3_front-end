@@ -17,6 +17,7 @@ import ReservationAvailableSpaces from "./pages/ReservationPages/Create/Reservat
 import ReservationDetailsPage from "./pages/ReservationPages/View/Details/ReservationDetailsPage";
 import ReservationUpdatePage from "./pages/ReservationPages/Update/ReservationUpdatePage";
 import ReservationDeletePage from "./pages/ReservationPages/Delete/ReservationDeletePage";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [stateUser, setStateUser] = useState(null);
@@ -85,6 +86,7 @@ function App() {
               </ul>
             </nav>
           </div>
+          <ToastContainer />
           <Routes>
             <Route path="/" element={<HomePage></HomePage>}></Route>
             {stateUser != null ? (

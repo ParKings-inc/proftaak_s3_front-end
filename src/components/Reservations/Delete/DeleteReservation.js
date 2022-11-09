@@ -11,6 +11,8 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import { deleteReservation } from '../../../services/ReservationService'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DeleteReservation = (props) => {
     const style = {
@@ -33,8 +35,35 @@ const DeleteReservation = (props) => {
     async function CancelReservation() {
         await deleteReservation(reservation.ReservationID);
         // Make into toaster
-        alert("Your reservation has been canceled.");
+        toasrMessage("success", "Your reservation has been canceled.");
         navigate("/reservations");
+    }
+
+
+    function toasrMessage(type, message) {
+        if (type == "error") {
+            toast.error(message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+            })
+        } else {
+            toast.success(message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+            })
+        }
     }
 
     return (
