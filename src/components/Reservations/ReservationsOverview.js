@@ -1,13 +1,25 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getAllReservations } from "../../services/ReservationService";
+import { getSpaceById } from "../../services/SpaceService";
+import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import "../../style/ReservationsPage.css";
-
+import dayjs from "dayjs";
 const ReservationOverview = (props) => {
 
+    useEffect(() => {
+        async function getReservationSpace(id) {
+            await getSpaceById(id);
+        }
+    });
+
+    function ToDetailsPage(reservation) {
+        navigate('/reservation/Details/', { state: { reservation: [reservation] } })
+    }
+    const navigate = useNavigate();
     let empty = []
     return (
 
@@ -54,14 +66,17 @@ const ReservationOverview = (props) => {
                                         {arrivalTime + ' - ' + departureTime}
                                     </Typography>
                                     <Typography className="w-35 word-break" variant="h5" component="div">
-                                        Space:{ reservatie.SpaceNumber }, Floor:{ reservatie.SpaceFloor }            
+                                        Space:{ reservatie.SpaceNumber }, Floor:{ reservatie.SpaceFloor }
                                     </Typography>
+
                                 </div>
                                 <div className='flex flex-row justify-between'>
                                     <Typography color="text.secondary">
                                         { arrivalDateString }
                                     </Typography>
 
+                                </div>
+                                <div className='flex flex-row justify-between'>
                                     <Typography color="text.secondary">
                                         { reservatie.Kenteken }
                                     </Typography>

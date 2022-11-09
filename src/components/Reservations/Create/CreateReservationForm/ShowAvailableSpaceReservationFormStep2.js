@@ -1,18 +1,19 @@
 import { Button } from "@mui/material";
-import { postReservation } from "../../../services/ReservationService";
+import { postReservation } from "../../../../services/ReservationService";
 import dayjs from "dayjs";
+
 const ShowAvailableSpaceReservationFormStep2 = (props) => {
   let spaces;
   async function ClaimSpot(spaceID, carID, ArrivalTime, DepartureTime) {
     alert(
       "reservation has been made " +
-        ArrivalTime +
-        " " +
-        DepartureTime +
-        " " +
-        spaceID +
-        " " +
-        carID
+      ArrivalTime +
+      " " +
+      DepartureTime +
+      " " +
+      spaceID +
+      " " +
+      carID
     );
     await postReservation(
       spaceID,
@@ -75,15 +76,6 @@ const ShowAvailableSpaceReservationFormStep2 = (props) => {
   return (
     <div className="row">
       <div className="row justify-content-md-center">
-        <Button
-          onClick={() => {
-            console.log(
-              "from step 2 " + props.DepartureTime + " " + props.ArrivalTime
-            );
-          }}
-        >
-          grappen
-        </Button>
         {spaces}
       </div>
     </div>

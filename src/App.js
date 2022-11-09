@@ -11,9 +11,12 @@ import AddCarPage from "./pages/AddCarPage";
 import EntranceScannerPage from "./pages/EntranceScannerPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import ParkingspacesOverview from "./pages/ParkingspacesOverview";
-import ReservationOverviewPage from "./pages/ReservationPages/ReservationOverviewPage";
-import ReservationsCreatePage from "./pages/ReservationPages/ReservationsCreatePage";
-import ReservationAvailableSpaces from "./pages/ReservationPages/ReservationAvailableSpaces"
+import ReservationOverviewPage from "./pages/ReservationPages/View/ReservationOverviewPage";
+import ReservationsCreatePage from "./pages/ReservationPages/Create/ReservationsCreatePage";
+import ReservationAvailableSpaces from "./pages/ReservationPages/Create/ReservationAvailableSpaces"
+import ReservationDetailsPage from "./pages/ReservationPages/View/Details/ReservationDetailsPage";
+import ReservationUpdatePage from "./pages/ReservationPages/Update/ReservationUpdatePage";
+import ReservationDeletePage from "./pages/ReservationPages/Delete/ReservationDeletePage";
 
 function App() {
   const [stateUser, setStateUser] = useState(null);
@@ -57,9 +60,7 @@ function App() {
                 <li>
                   <Link to="/">Home</Link>
                 </li>
-                <li className="">
-                  <Link to="/reservations">Reservations</Link>
-                </li>
+
                 {stateUser == null ? (
                   <>
                     <li className="router-space">
@@ -68,6 +69,9 @@ function App() {
                   </>
                 ) : (
                   <>
+                    <li className="">
+                      <Link to="/reservations">Reservations</Link>
+                    </li>
                     <li>
                       <Link to="/carpage">car page</Link>
                     </li>
@@ -96,10 +100,19 @@ function App() {
               element={<LoginPage value={value}></LoginPage>}
             ></Route>
             <Route path="/signup" element={<SignUpPage></SignUpPage>}></Route>
+            {/* View */}
             <Route path="/reservations" element={<ReservationOverviewPage></ReservationOverviewPage>}></Route>
+            {/* Create */}
             <Route path="/reservations/create" element={<ReservationsCreatePage></ReservationsCreatePage>}></Route>
             <Route path="/reservations/availableSpaces/:LicensePlate/:ArrivalTime/:DepartureTime/:GarageId" element={<ReservationAvailableSpaces />} />
+            {/* Details */}
+            <Route path="/reservation/Details" element={<ReservationDetailsPage />}></Route>
+            {/* Update */}
+            <Route path="/reservation/Update" element={<ReservationUpdatePage />}></Route>
+            {/* Delete */}
+            <Route path="/reservation/Delete" element={<ReservationDeletePage />}></Route>
           </Routes>
+
         </BrowserRouter>
       </userContext.Provider>
     </div>
