@@ -1,6 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { getReservationsByUser } from "../../services/ReservationService";
-import ReservationsOverview from "../../components/Reservations/ReservationsOverview";
+
+import React, { useContext, useEffect, useState } from 'react'
+import { getReservationsByUser } from "../../../services/ReservationService";
+import ReservationsOverview from "../../../components/Reservations/ReservationsOverview";
+
+
 
 import { userContext } from '../../../userContext';
 import { useNavigate } from 'react-router-dom';

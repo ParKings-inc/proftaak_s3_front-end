@@ -24,65 +24,46 @@ const ReservationOverview = (props) => {
     return (
 
         <div className='w-80'>
-            {props.reservations.map((reservatie, index) => {
-                const arrivalDate = new Date(reservatie.ArrivalTime);
-                const arrivalDateString = arrivalDate.toLocaleDateString();
-                
-                const arrivalTime = `${arrivalDate.getHours()}:${arrivalDate.getMinutes()}`;
-            
-                const departureDate = new Date(reservatie.DepartureTime);
-                const departureTime = `${departureDate.getHours()}:${departureDate.getMinutes()}`;
-                
-                const border = "left-border";
-
-                let status = "";
-                let statusTextColor = "";
-                let statusBorderColor = "";
-
-                switch (reservatie.Status) {
-                    case "Pending":
-                        status = "Pending";
-                        statusTextColor = "text-warning";
-                        statusBorderColor = "border-warning";
-                        break;
-                    case "Approved":
-                        status = "Approved";
-                        statusTextColor = "text-success";
-                        statusBorderColor = "border-success";
-                        break;
-
-                    case "Denied":
-                        status = "Denied";
-                        statusTextColor = "text-danger";
-                        statusBorderColor = "border-danger";
-                        break;
-                }
+            {props.reservations.map((reservation, index) => {
+                const arrivalDate = new Date(reservation.ArrivalTime);
+                const arrivalTime = `${arrivalDate.getHours()}:${String(arrivalDate.getMinutes()).padStart(2, '0')}`;
+                const date = dayjs(reservation.ArrivalTime).format("DD-MM-YYYY")
+                const departureDate = new Date(reservation.DepartureTime);
+                const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
                 return (
                     <div className='w-100 mb-3' key={index}>
-                        <Card className={'left-border ' + statusBorderColor}>
+                        <Card onClick={() => ToDetailsPage(reservation)} className='left-border border-primary'>
                             <CardContent className='p-3'>
-                                <div className='flex flex-row justify-between mb-10'>
+                                <div className='flex flex-row justify-between'>
+                                    {/* Maybe add "Arrival time - End time" in front more information. */}
                                     <Typography variant="h5" component="div">
-                                        {arrivalTime + ' - ' + departureTime}
-                                    </Typography>
-                                    <Typography className="w-35 word-break" variant="h5" component="div">
-                                        Space:{ reservatie.SpaceNumber }, Floor:{ reservatie.SpaceFloor }
+                                        {console.log(reservation)}
+                                        {reservation.GarageName}
                                     </Typography>
 
                                 </div>
                                 <div className='flex flex-row justify-between'>
                                     <Typography color="text.secondary">
-                                        { arrivalDateString }
+                                        <b>Date:</b> {date}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                        <b>Time:</b> {arrivalTime + ' - ' + departureTime}
+                                    </Typography>
+                                </div>
+
+                                <div className='flex flex-row justify-between'>
+                                    <Typography color="text.secondary">
+                                        <b>Space:</b> {reservation.SpaceID}-{reservation.SpaceFloor}-{reservation.SpaceRow}
                                     </Typography>
 
                                 </div>
                                 <div className='flex flex-row justify-between'>
                                     <Typography color="text.secondary">
-                                        { reservatie.Kenteken }
+                                        <b>License plate:</b> {reservation.Kenteken}
                                     </Typography>
                                 </div>
-                                <Typography className={statusTextColor} sx={{marginTop: 1}} color="text.primary">
-                                    { status }
+                                <Typography className='text-warning' sx={{ marginTop: 1 }} color="text.primary">
+                                    {reservation.Status}
                                 </Typography>
                             </CardContent>
                         </Card>
