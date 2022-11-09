@@ -10,7 +10,9 @@ import "./App.css";
 import AddCarPage from "./pages/AddCarPage";
 import EntranceScannerPage from "./pages/EntranceScannerPage";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap";
 //import ParkingspacesOverview from "./pages/ParkingspacesOverview";
+import NavigationBar from "./components/NavBar";
 import ReservationOverviewPage from "./pages/ReservationPages/View/ReservationOverviewPage";
 import ReservationsCreatePage from "./pages/ReservationPages/Create/ReservationsCreatePage";
 import ReservationAvailableSpaces from "./pages/ReservationPages/Create/ReservationAvailableSpaces"
@@ -52,41 +54,12 @@ function App() {
   }, []);
 
   return (
-    <div>
+
+    <>
+    <ToastContainer></ToastContainer>
       <userContext.Provider value={value}>
         <BrowserRouter>
-          <div>
-            <nav>
-              <ul className="router">
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-
-                {stateUser == null ? (
-                  <>
-                    <li className="router-space">
-                      <Link to="/login">Log In</Link>
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <li className="">
-                      <Link to="/reservations">Reservations</Link>
-                    </li>
-                    <li>
-                      <Link to="/carpage">car page</Link>
-                    </li>
-                    <li className="router-space">
-                      <button id="logout" onClick={logoutUser}>
-                        Log Out
-                      </button>
-                    </li>
-                  </>
-                )}
-              </ul>
-            </nav>
-          </div>
-          <ToastContainer />
+          <NavigationBar value={stateUser} logout={logoutUser}></NavigationBar>
           <Routes>
             <Route path="/" element={<HomePage></HomePage>}></Route>
             {stateUser != null ? (
@@ -99,12 +72,10 @@ function App() {
             )}
             <Route
               path="/login"
-              element={<LoginPage value={value}></LoginPage>}
+              element={<LoginPage value={value} ></LoginPage>}
             ></Route>
             <Route path="/signup" element={<SignUpPage></SignUpPage>}></Route>
-            {/* View */}
             <Route path="/reservations" element={<ReservationOverviewPage></ReservationOverviewPage>}></Route>
-            {/* Create */}
             <Route path="/reservations/create" element={<ReservationsCreatePage></ReservationsCreatePage>}></Route>
             <Route path="/reservations/availableSpaces/:LicensePlate/:ArrivalTime/:DepartureTime/:GarageId" element={<ReservationAvailableSpaces />} />
             {/* Details */}
@@ -114,10 +85,10 @@ function App() {
             {/* Delete */}
             <Route path="/reservation/Delete" element={<ReservationDeletePage />}></Route>
           </Routes>
-
         </BrowserRouter>
       </userContext.Provider>
-    </div>
+    </>
+
   );
 }
 
