@@ -69,7 +69,7 @@ const ReservationDetails = () => {
             <div className="input-group mb-3">
                 <FormControl sx={{ m: 1 }}>
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="error"
                         onClick={CancelReservation}
                     >
