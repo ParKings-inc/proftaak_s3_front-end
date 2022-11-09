@@ -64,6 +64,7 @@ const CreateReservationFormStep1 = () => {
         Garage
       );
 
+      console.log(AllSpaces);
       let car = await getCarIdByLicensePlate(LicensePlate);
 
       if (AllSpaces.length > 0) {
@@ -78,6 +79,7 @@ const CreateReservationFormStep1 = () => {
         try {
           if (await postReservation(reservationbody) !== 404) {
             alert("reservation has been made ");
+            navigate("/reservations");
           }
           else {
             alert("You already have a reservation around this time for this license plate");
@@ -86,7 +88,7 @@ const CreateReservationFormStep1 = () => {
         } catch (error) {
           console.log(error);
         }
-        navigate("/reservations");
+
       } else {
         alert("No available spaces for this time " + AllSpaces.length);
         console.log("Not a valid reservation");
