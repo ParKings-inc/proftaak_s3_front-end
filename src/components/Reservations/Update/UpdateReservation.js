@@ -52,7 +52,7 @@ const UpdateReservation = (props) => {
         // setLicensePlate(TotalLicensePlate[0].kenteken);
     }, [TotalLicensePlate]);
 
-    
+
 
     async function updateReservationClick(e) {
         // check if all fields are answered
@@ -81,17 +81,19 @@ const UpdateReservation = (props) => {
                     };
 
                     try {
+                        var response = await putReservation(reservationbody)
                         //update instead of post
-                        if (await putReservation(reservationbody) == "success") {
-                            toasrMessage("success","Reservation updated successfully");
+                        if (response == "success") {
+                            toasrMessage("success", "Reservation updated successfully");
+                            navigate("/reservations");
                         }
                         else {
-                            toasrMessage("error","Something went wrong");
+                            toasrMessage("error", response);
                         }
                     } catch (error) {
-                        toasrMessage("error",error.response.data);
+                        toasrMessage("error", error.response.data);
                     }
-                    navigate("/reservations");
+
                 } else {
                     toasrMessage("error", "No spaces available for this time");
                 }
@@ -126,31 +128,31 @@ const UpdateReservation = (props) => {
 
     function toasrMessage(type, message) {
         if (type == "error") {
-          toast.error(message, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored"
-          })
+            toast.error(message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+            })
         } else {
-          toast.success(message, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored"
-          })
+            toast.success(message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+            })
         }
-      }
+    }
 
-    
+
 
     console.log(reservation);
 
