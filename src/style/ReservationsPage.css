@@ -20,6 +20,10 @@
     margin-bottom: 25px;
 }
 
+.mb-10 {
+    margin-bottom: 10px;
+}
+
 .flex {
     display: flex;
 }
@@ -34,6 +38,10 @@
 
 .w-80 {
     width: 80%;
+}
+
+.w-35 {
+    width: 35%;
 }
 
 .w-45 {
@@ -76,4 +84,8 @@
 
 .decoration-none {
     text-decoration: none;
+}
+
+.word-break {
+    word-wrap: break-word;
 }

@@ -30,10 +30,6 @@ const ReservationOverview = (props) => {
                 const date = dayjs(reservation.ArrivalTime).format("DD-MM-YYYY")
                 const departureDate = new Date(reservation.DepartureTime);
                 const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
-                {/* getReservationSpace(reservation.SpaceID)  */ }
-                {/* let space = getSpaceById(reservation.SpaceID); */ }
-                {/* console.log(space); */ }
-                {/* console.log(reservation) */ }
                 return (
                     <div className='w-100 mb-3' key={index}>
                         <Card onClick={() => ToDetailsPage(reservation)} className='left-border border-primary'>
