@@ -71,14 +71,19 @@ const CreateReservationFormStep1 = () => {
 
   async function ClaimSpot(e) {
     e.preventDefault();
+    let allSpaces = await getReservationAvailableSpaces(
+                        ArrivalTime,
+                        DepartureTime,
+                        Garage
+                      )
 
     if (ArrivalTime != null && DepartureTime != null && LicensePlate != "") {
 
       let car = await getCarIdByLicensePlate(LicensePlate);
 
-      if (AvailableSpaces.length > 0) {
+      if (allSpaces.length > 0) {
         let reservationbody = {
-          spaceID: AvailableSpaces[0].ID,
+          spaceID: allSpaces[0].ID,
           carID: car,
           ArrivalTime: ArrivalTime,
           DepartureTime: DepartureTime,
@@ -88,16 +93,16 @@ const CreateReservationFormStep1 = () => {
         try {
           let response = await postReservation(reservationbody);
           if (response.id >= 0) {
-            toasrMessage("success", "Reservation succesfully created")
+            toasrMessage("success", "Reservation succesfully created");
             navigate("/reservations");
           } else {
-            toasrMessage("error", response)
+            toasrMessage("error", response);
           }
         } catch (error) {
-          toasrMessage("error", "Reservation Failed")
+          toasrMessage("error", "Reservation Failed");
         }
       } else {
-        toasrMessage("error", "No free spaces left")
+        toasrMessage("error", "No free spaces left");
       }
     } else {
       toasrMessage("error", "Please fill in all fields")
