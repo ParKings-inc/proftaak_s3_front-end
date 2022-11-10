@@ -60,6 +60,7 @@ function App() {
       <userContext.Provider value={value}>
         <BrowserRouter>
           <NavigationBar value={stateUser} logout={logoutUser}></NavigationBar>
+
           <Routes>
             <Route path="/" element={<HomePage></HomePage>}></Route>
             {stateUser != null ? (

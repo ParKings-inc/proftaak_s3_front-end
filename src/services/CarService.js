@@ -2,7 +2,7 @@ const axios = require("axios");
 
 export async function getAllCars() {
   try {
-    const response = await axios.get("https://localhost:7205/api/Autos");
+    const response = await axios.get("https://localhost:7205/api/Cars");
     console.log("response ", response);
     return response.data;
   } catch (error) {
@@ -24,14 +24,30 @@ export async function getCarByUserId(id) {
 
 export async function AddCar(data)
 {
+  if(/*(DoesLicenseExist(data.kenteken) == false) &&*/ (data.kenteken.length > 0) && (data.kenteken.length <20)){
+    console.log('succes');
     try{
-        console.log(data)
-        axios.post('https://localhost:7205/api/Cars', data)
+        console.log(data);
+        axios.post('https://localhost:7205/api/Cars', data);
     }
     catch(error){
-        console.log(error)
+        console.log(error);
     }
+  }
+  else{
+  console.log('helaas')}
 }
+async function DoesLicenseExist(id){
+    try {
+      const response = await axios.get(
+        `https://localhost:7205/api/Cars/LicenseExists/${id}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      return [];
+    }
+  }
 
 export async function getCarIdByLicensePlate(plate) {
   try {
@@ -40,6 +56,16 @@ export async function getCarIdByLicensePlate(plate) {
     );
     console.log(response.data.id);
     return response.data.id;
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function DeleteCar(id) {
+  try {
+    const response = await axios.delete(
+      `https://localhost:7205/api/Cars/${id}`
+    );
   } catch (error) {
     return [];
   }
