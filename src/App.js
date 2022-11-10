@@ -10,10 +10,16 @@ import "./App.css";
 import AddCarPage from "./pages/AddCarPage";
 import EntranceScannerPage from "./pages/EntranceScannerPage";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap";
 //import ParkingspacesOverview from "./pages/ParkingspacesOverview";
-import ReservationOverviewPage from "./pages/ReservationPages/ReservationOverviewPage";
-import ReservationsCreatePage from "./pages/ReservationPages/ReservationsCreatePage";
-import ReservationAvailableSpaces from "./pages/ReservationPages/ReservationAvailableSpaces"
+import NavigationBar from "./components/NavBar";
+import ReservationOverviewPage from "./pages/ReservationPages/View/ReservationOverviewPage";
+import ReservationsCreatePage from "./pages/ReservationPages/Create/ReservationsCreatePage";
+import ReservationAvailableSpaces from "./pages/ReservationPages/Create/ReservationAvailableSpaces"
+import ReservationDetailsPage from "./pages/ReservationPages/View/Details/ReservationDetailsPage";
+import ReservationUpdatePage from "./pages/ReservationPages/Update/ReservationUpdatePage";
+import ReservationDeletePage from "./pages/ReservationPages/Delete/ReservationDeletePage";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [stateUser, setStateUser] = useState(null);
@@ -48,36 +54,13 @@ function App() {
   }, []);
 
   return (
-    <div>
+
+    <>
+    <ToastContainer></ToastContainer>
       <userContext.Provider value={value}>
         <BrowserRouter>
-          <div>
-            <nav>
-              <ul className="router">
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li className="">
-                  <Link to="/reservations">Reservations</Link>
-                </li>
-                {stateUser == null ? (
-                  <>
-                    <li className="router-space">
-                      <Link to="/login">Log In</Link>
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <li className="router-space">
-                      <button id="logout" onClick={logoutUser}>
-                        Log Out
-                      </button>
-                    </li>
-                  </>
-                )}
-              </ul>
-            </nav>
-          </div>
+          <NavigationBar value={stateUser} logout={logoutUser}></NavigationBar>
+
           <Routes>
             <Route path="/" element={<HomePage></HomePage>}></Route>
             {stateUser != null ? (
@@ -90,16 +73,23 @@ function App() {
             )}
             <Route
               path="/login"
-              element={<LoginPage value={value}></LoginPage>}
+              element={<LoginPage value={value} ></LoginPage>}
             ></Route>
             <Route path="/signup" element={<SignUpPage></SignUpPage>}></Route>
             <Route path="/reservations" element={<ReservationOverviewPage></ReservationOverviewPage>}></Route>
             <Route path="/reservations/create" element={<ReservationsCreatePage></ReservationsCreatePage>}></Route>
             <Route path="/reservations/availableSpaces/:LicensePlate/:ArrivalTime/:DepartureTime/:GarageId" element={<ReservationAvailableSpaces />} />
+            {/* Details */}
+            <Route path="/reservation/Details" element={<ReservationDetailsPage />}></Route>
+            {/* Update */}
+            <Route path="/reservation/Update" element={<ReservationUpdatePage />}></Route>
+            {/* Delete */}
+            <Route path="/reservation/Delete" element={<ReservationDeletePage />}></Route>
           </Routes>
         </BrowserRouter>
       </userContext.Provider>
-    </div>
+    </>
+
   );
 }
 
