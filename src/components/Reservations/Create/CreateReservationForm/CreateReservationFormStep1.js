@@ -30,12 +30,13 @@ const CreateReservationFormStep1 = () => {
   const [LicensePlate, setLicensePlate] = useState("");
   const [Garage, setGarage] = useState(null);
   const [ArrivalTime, setArrivalTime] = useState(null);
-  const [GarageID, setGarageID] = useState(0);
+  const [GarageID, setGarageID] = useState(null);
   const [DepartureTime, setDepartureTime] = useState(null);
   const [TotalLicensePlate, setTotalLicensePlate] = useState([]);
   const [TotalGarage, setTotalGarage] = useState([]);
-  const [AvailableSpaces, setAvailableSpaces] = useState([]);
+  const [AvailableSpaces, setAvailableSpaces] = useState(null);
   const { user } = useContext(userContext);
+  const [updateDisplay, setUpdateDisplay] = useState(false);
   const [TotalSpaces, setTotalSpaces] = useState(0);
   const navigate = useNavigate();
 
@@ -62,6 +63,17 @@ const CreateReservationFormStep1 = () => {
     AssignTotalSpaces();
   }, [Garage])
 
+  useEffect(() => {
+    async function AssignAvailableSpaces() {
+      if (Garage != null && ArrivalTime != null && DepartureTime != null) {
+        setAvailableSpaces(await getReservationAvailableSpaces(ArrivalTime, DepartureTime, Garage));
+      }
+    }
+    AssignAvailableSpaces();
+    setUpdateDisplay(false)
+  }, [updateDisplay])
+
+
 
 
   useEffect(() => {
@@ -71,13 +83,17 @@ const CreateReservationFormStep1 = () => {
 
   async function ClaimSpot(e) {
     e.preventDefault();
-    let allSpaces = await getReservationAvailableSpaces(
-                        ArrivalTime,
-                        DepartureTime,
-                        Garage
-                      )
+
+
+
 
     if (ArrivalTime != null && DepartureTime != null && LicensePlate != "") {
+
+      let allSpaces = await getReservationAvailableSpaces(
+        ArrivalTime,
+        DepartureTime,
+        Garage
+      )
 
       let car = await getCarIdByLicensePlate(LicensePlate);
 
@@ -165,8 +181,7 @@ const CreateReservationFormStep1 = () => {
               label="Garage"
               onChange={(newValue) => {
                 setGarage(newValue.target.value);
-                setGarageID(Garage);
-                console.log(GarageID);
+                  setUpdateDisplay(true);
               }}
             >
               {TotalGarage.map((garage) => {
@@ -214,6 +229,10 @@ const CreateReservationFormStep1 = () => {
                 onChange={(newValue) => {
                   setArrivalTime(newValue);
                 }}
+
+                onAccept={(newValue) => {
+                  setUpdateDisplay(true);
+                }}
                 minDateTime={dayjs(new Date())}
                 required
               />
@@ -230,24 +249,10 @@ const CreateReservationFormStep1 = () => {
                 value={DepartureTime == null ? ArrivalTime : DepartureTime}
                 onChange={(newValue) => {
                   setDepartureTime(newValue);
-                  console.log(newValue - ArrivalTime);
                 }}
-
-                onAccept={() => {
-                  console.log("fire")
-
-                  async function AssignSpaces() {
-                    console.log(Garage)
-                    if (Garage != null)
-                      setAvailableSpaces(await getReservationAvailableSpaces(
-                        ArrivalTime,
-                        DepartureTime,
-                        Garage
-                      ))
-                  }
-                  AssignSpaces();
+                onAccept={(newValue) => {
+                  setUpdateDisplay(true);
                 }}
-
                 minDateTime={ArrivalTime}
                 required
                 disabled={ArrivalTime == null}
@@ -255,7 +260,7 @@ const CreateReservationFormStep1 = () => {
             </LocalizationProvider>
           </FormControl>
         </div>
-        {AvailableSpaces.length > 0 ? <AvailableSpaceDisplay totalSpaces={TotalSpaces} freeSpaces={AvailableSpaces.length}></AvailableSpaceDisplay> : <></>}
+        {Garage != null && ArrivalTime != null && DepartureTime != null && AvailableSpaces != null ? <AvailableSpaceDisplay totalSpaces={TotalSpaces} freeSpaces={AvailableSpaces.length}></AvailableSpaceDisplay> : <></>}
 
         <div className="input-group mb-3">
           <FormControl sx={{ m: 1 }}>

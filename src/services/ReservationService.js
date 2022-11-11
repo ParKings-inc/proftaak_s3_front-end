@@ -23,8 +23,8 @@ export async function getReservationsByUser(id) {
 
 export async function getReservationAvailableSpaces(ArrivalTime, DepartureTime, garageId) {
   console.log("from service " + garageId)
-  ArrivalTime = dayjs(ArrivalTime).format("YYYY-MM-DDTHH:mm:00.000Z")
-  DepartureTime = dayjs(DepartureTime).format("YYYY-MM-DDTHH:mm:00.000Z")
+  ArrivalTime = dayjs(ArrivalTime).format("YYYY-MM-DDTHH:mm:00.000Z").substring(0, 19)
+  DepartureTime = dayjs(DepartureTime).format("YYYY-MM-DDTHH:mm:00.000Z").substring(0, 19)
   try {
     const response = await axios.get(
       encodeURI(api + `Spaces/reservations/create/getavailableSpace/${ArrivalTime}/${DepartureTime}/${garageId}`)
