@@ -22,16 +22,22 @@ import { getReservationAvailableSpaces } from "../../../../services/ReservationS
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getAllGarage } from "../../../../services/GarageService"
+import FreeSpaceDisplay from "../../../FreeSpaceDisplay";
+import AvailableSpaceDisplay from "../../../AvailableSpaceDisplay";
+import { getFreeSpaces } from "../../../../services/ParkingService";
 
 const CreateReservationFormStep1 = () => {
   const [LicensePlate, setLicensePlate] = useState("");
   const [Garage, setGarage] = useState(null);
   const [ArrivalTime, setArrivalTime] = useState(null);
-  const [GarageID, setGarageID] = useState([]);
+  const [GarageID, setGarageID] = useState(null);
   const [DepartureTime, setDepartureTime] = useState(null);
   const [TotalLicensePlate, setTotalLicensePlate] = useState([]);
   const [TotalGarage, setTotalGarage] = useState([]);
+  const [AvailableSpaces, setAvailableSpaces] = useState(null);
   const { user } = useContext(userContext);
+  const [updateDisplay, setUpdateDisplay] = useState(false);
+  const [TotalSpaces, setTotalSpaces] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,6 +54,27 @@ const CreateReservationFormStep1 = () => {
 
   }, [user]);
 
+  useEffect(() => {
+    async function AssignTotalSpaces() {
+      console.log(Garage)
+      if (Garage != null)
+        setTotalSpaces(await getFreeSpaces(Garage));
+    }
+    AssignTotalSpaces();
+  }, [Garage])
+
+  useEffect(() => {
+    async function AssignAvailableSpaces() {
+      if (Garage != null && ArrivalTime != null && DepartureTime != null) {
+        setAvailableSpaces(await getReservationAvailableSpaces(ArrivalTime, DepartureTime, Garage));
+      }
+    }
+    AssignAvailableSpaces();
+    setUpdateDisplay(false)
+  }, [updateDisplay])
+
+
+
 
   useEffect(() => {
     if (TotalLicensePlate.length > 0)
@@ -57,17 +84,22 @@ const CreateReservationFormStep1 = () => {
   async function ClaimSpot(e) {
     e.preventDefault();
 
+
+
+
     if (ArrivalTime != null && DepartureTime != null && LicensePlate != "") {
-      let AllSpaces = await getReservationAvailableSpaces(
+
+      let allSpaces = await getReservationAvailableSpaces(
         ArrivalTime,
         DepartureTime,
-        1
-      );
+        Garage
+      )
+
       let car = await getCarIdByLicensePlate(LicensePlate);
 
-      if (AllSpaces.length > 0) {
+      if (allSpaces.length > 0) {
         let reservationbody = {
-          spaceID: AllSpaces[0].ID,
+          spaceID: allSpaces[0].ID,
           carID: car,
           ArrivalTime: ArrivalTime,
           DepartureTime: DepartureTime,
@@ -77,16 +109,16 @@ const CreateReservationFormStep1 = () => {
         try {
           let response = await postReservation(reservationbody);
           if (response.id >= 0) {
-            toasrMessage("success", "Reservation succesfully created")
+            toasrMessage("success", "Reservation succesfully created");
             navigate("/reservations");
           } else {
-            toasrMessage("error", response)
+            toasrMessage("error", response);
           }
         } catch (error) {
-          toasrMessage("error", "Reservation Failed")
+          toasrMessage("error", "Reservation Failed");
         }
       } else {
-        toasrMessage("error", "No free spaces left")
+        toasrMessage("error", "No free spaces left");
       }
     } else {
       toasrMessage("error", "Please fill in all fields")
@@ -134,6 +166,9 @@ const CreateReservationFormStep1 = () => {
     <>
 
       <div className="row justify-content-md-center">
+        <div style={{ "text-align": "center" }}>
+          <p style={{ "color": "grey" }}>Available parking spaces visible after filling in garage and time</p>
+        </div>
 
         <div className="input-group mb-3">
           <FormControl fullWidth sx={{ m: 1 }}>
@@ -146,8 +181,7 @@ const CreateReservationFormStep1 = () => {
               label="Garage"
               onChange={(newValue) => {
                 setGarage(newValue.target.value);
-                setGarageID(Garage);
-                console.log(GarageID);
+                  setUpdateDisplay(true);
               }}
             >
               {TotalGarage.map((garage) => {
@@ -195,6 +229,10 @@ const CreateReservationFormStep1 = () => {
                 onChange={(newValue) => {
                   setArrivalTime(newValue);
                 }}
+
+                onAccept={(newValue) => {
+                  setUpdateDisplay(true);
+                }}
                 minDateTime={dayjs(new Date())}
                 required
               />
@@ -211,7 +249,9 @@ const CreateReservationFormStep1 = () => {
                 value={DepartureTime == null ? ArrivalTime : DepartureTime}
                 onChange={(newValue) => {
                   setDepartureTime(newValue);
-                  console.log(newValue - ArrivalTime);
+                }}
+                onAccept={(newValue) => {
+                  setUpdateDisplay(true);
                 }}
                 minDateTime={ArrivalTime}
                 required
@@ -220,6 +260,8 @@ const CreateReservationFormStep1 = () => {
             </LocalizationProvider>
           </FormControl>
         </div>
+        {Garage != null && ArrivalTime != null && DepartureTime != null && AvailableSpaces != null ? <AvailableSpaceDisplay totalSpaces={TotalSpaces} freeSpaces={AvailableSpaces.length}></AvailableSpaceDisplay> : <></>}
+
         <div className="input-group mb-3">
           <FormControl sx={{ m: 1 }}>
             <Button
@@ -227,7 +269,7 @@ const CreateReservationFormStep1 = () => {
               onClick={CancelReservation}
               color="error"
             >
-              Cancel
+              Back
             </Button>
           </FormControl>
           <FormControl sx={{ m: 1 }}>

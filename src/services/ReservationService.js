@@ -23,8 +23,9 @@ export async function getReservationsByUser(id) {
 
 export async function getReservationAvailableSpaces(ArrivalTime, DepartureTime, garageId) {
   console.log("from service " + garageId)
-  ArrivalTime = dayjs(ArrivalTime).format("YYYY-MM-DDTHH:mm:00.000Z")
-  DepartureTime = dayjs(DepartureTime).format("YYYY-MM-DDTHH:mm:00.000Z")
+  ArrivalTime = dayjs(ArrivalTime).format("YYYY-MM-DDTHH:mm:ss")
+  DepartureTime = dayjs(DepartureTime).format("YYYY-MM-DDTHH:mm:ss")
+  console.log(ArrivalTime);
   try {
     const response = await axios.get(
       encodeURI(api + `Spaces/reservations/create/getavailableSpace/${ArrivalTime}/${DepartureTime}/${garageId}`)
@@ -39,8 +40,8 @@ export async function postReservation(data) {
   try {
     console.log(data.DepartureTime - data.ArrivalTime)
     if (data.DepartureTime - data.ArrivalTime >= 1800000) {
-      data.ArrivalTime = dayjs(data.ArrivalTime).format("YYYY-MM-DDTHH:mm:00.000Z")
-      data.DepartureTime = dayjs(data.DepartureTime).format("YYYY-MM-DDTHH:mm:00.000Z")
+      data.ArrivalTime = dayjs(data.ArrivalTime).format("YYYY-MM-DDTHH:mm:ss")
+      data.DepartureTime = dayjs(data.DepartureTime).format("YYYY-MM-DDTHH:mm:ss")
       const response = await axios.post(api + `Reservations`, data);
       console.log("from service " + response);
       return response.data;
@@ -59,8 +60,8 @@ export async function putReservation(reservationbody) {
     // if you don't format the times the times get confused and put back by 1 hour.
     // I know its bad practice to put the format here. But this is temporary, I want to discuss this bug. So to keep this clear, I will keep it here. haha that rhymes.
     if (reservationbody.DepartureTime - reservationbody.ArrivalTime >= 1800000) {
-      reservationbody.ArrivalTime = dayjs(reservationbody.ArrivalTime).format("YYYY-MM-DDTHH:mm:00.000Z")
-      reservationbody.DepartureTime = dayjs(reservationbody.DepartureTime).format("YYYY-MM-DDTHH:mm:00.000Z")
+      reservationbody.ArrivalTime = dayjs(reservationbody.ArrivalTime).format("YYYY-MM-DDTHH:mm:ss")
+      reservationbody.DepartureTime = dayjs(reservationbody.DepartureTime).format("YYYY-MM-DDTHH:mm:ss")
       const response = await axios.put(api + `Reservations/${reservationbody.Id}`, reservationbody);
       return "success";
     } else {
