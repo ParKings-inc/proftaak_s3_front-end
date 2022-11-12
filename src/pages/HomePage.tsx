@@ -42,6 +42,10 @@ export default function HomePage() {
         setStatereservations(reservationsToday);
     }
 
+    function GoToReservations(){
+        navigate("reservations");
+    }
+
     useEffect(() => {
         getReservationsOfToday();
 
@@ -116,7 +120,7 @@ export default function HomePage() {
                                 <LocalParkingIcon className="text-primary" sx={{fontSize: "60px", marginBottom: "10px"}}/>
                                 <Typography variant="body1">Enter Garage</Typography>
                             </div>
-                            <div className="w-40 full-height border rounded-3 shadow flex column vertical-center horizontal-center">
+                            <div onClick={GoToReservations} className="w-40 full-height border rounded-3 shadow flex column vertical-center horizontal-center">
                                 <SettingsIcon className="text-primary" sx={{fontSize: "60px", marginBottom: "10px"}}/>
                                 <Typography variant="body1">Manage</Typography>
                             </div>
