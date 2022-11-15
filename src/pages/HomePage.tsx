@@ -17,15 +17,11 @@ export default function HomePage() {
     const service = new AccountService();
     const navigate = useNavigate();
     const [stateReservations, setStatereservations] = useState<any[]>([]);
+    const [stateUser, setstateUser] = useState<any>(null);
     const unparsedJWT = service.getUser();
 
-    if(unparsedJWT == null) {
-        navigate("/login");
-        navigate(0);
-    }
-
-    let user: any = service.parseJwt(unparsedJWT);
-    const dateToday = new Date().toDateString();
+    let user: any;
+    let dateToday: any;
 
     async function getReservationsOfToday(){
         const reservations = await getReservationsByUser(user.sub);
@@ -47,6 +43,15 @@ export default function HomePage() {
     }
 
     useEffect(() => {
+        if(unparsedJWT == null) {
+            navigate("/login");
+            return;
+        }
+        
+        user = service.parseJwt(unparsedJWT);
+        dateToday = new Date().toDateString();
+
+        setstateUser(user);
         getReservationsOfToday();
 
     }, [stateReservations.length]);
@@ -56,14 +61,14 @@ export default function HomePage() {
             <div className="full-width full-height" style={{display: "Flex", flexDirection: "column"}}>
                 <div className="bg-primary h-40 skew flex horizontal-center padding-top-100">
                     <div className="flex column vertical-center">
-                        <Avatar alt={user.name} src={user.picture} sx={{ width: 100, height: 100, marginBottom: "20px" }}/>
-                        <Typography className="text-white" variant="h5">{ user.name }</Typography>
+                        { stateUser != null && <Avatar alt={stateUser.name} src={stateUser.picture} sx={{ width: 100, height: 100, marginBottom: "20px" }}/> }
+                        { stateUser != null && <Typography className="text-white" variant="h5">{ stateUser.name }</Typography> }
                     </div>
                 </div>
                 <div className="flex column vertical-center h-50">
                     <Typography className="text-black" variant="h6">You have <span className="text-primary text-26"> { stateReservations.length } </span> reservations today!</Typography>
 
-                    <Carousel className="bg-primary" style={{width: "80%", backgroundColor: "#b8b8b8", marginBottom: "20px", padding: "10px"}}>
+                    <Carousel className="bg-primary" style={{minHeight: "30%", width: "80%", backgroundColor: "#b8b8b8", marginBottom: "20px", padding: "10px"}}>
                             { stateReservations.map((reservation, index) => {
                                 const arrivalDate = new Date(reservation.ArrivalTime);
                                 const arrivalTime = `${arrivalDate.getHours()}:${String(arrivalDate.getMinutes()).padStart(2, '0')}`;
