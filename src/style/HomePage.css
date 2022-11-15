@@ -78,6 +78,10 @@
     margin-bottom: 30px;
 }
 
+.padding-top-50 {
+    padding-top: 50px;
+}
+
 .padding-top-100 {
     padding-top: 100px;
 }
@@ -114,6 +118,10 @@
 
 .text-dec-none {
     text-decoration: none;
+}
+
+.max-h-35 {
+    max-height: 35%;
 }
 
 .h-40 {
