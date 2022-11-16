@@ -82,8 +82,8 @@ const UpdateReservation = (props) => {
 
                     try {
                         var response = await putReservation(reservationbody)
-                        //update instead of post
-                        if (response == "success") {
+
+                        if (response === "success") {
                             toasrMessage("success", "Reservation updated successfully");
                             navigate("/reservations");
                         }
@@ -106,28 +106,33 @@ const UpdateReservation = (props) => {
                     spaceID: reservation.SpaceID,
                     carID: car,
                     Status: "Pending",
-                    ArrivalTime: ArrivalTime,
-                    DepartureTime: DepartureTime,
+                    ArrivalTime: dayjs(ArrivalTime),
+                    DepartureTime: dayjs(DepartureTime),
                 };
                 try {
-                    await putReservation(reservationbody);
+                    var response = await putReservation(reservationbody)
+                    console.log("under here");
                     console.log(reservationbody);
-                    toasrMessage("success", "Reservation has been updated");
+                    if (response === "success") {
+                        toasrMessage("success", "Reservation updated successfully");
+                        navigate("/reservations");
+                    }
+                    else {
+                        toasrMessage("error", response);
+                    }
                 } catch (error) {
-                    console.log(error)
+                    toasrMessage("error", error.response.data);
                 }
 
-                navigate("/reservations");
             }
         }
         else {
             alert("Make sure all fields are answered.")
         }
-        // navigate("/reservations");
     }
 
     function toasrMessage(type, message) {
-        if (type == "error") {
+        if (type === "error") {
             toast.error(message, {
                 position: "top-right",
                 autoClose: 3000,
@@ -241,7 +246,7 @@ const UpdateReservation = (props) => {
                     </Button>
                 </FormControl> */}
             </div>
-        </div >
+        </div>
 
     );
 };
