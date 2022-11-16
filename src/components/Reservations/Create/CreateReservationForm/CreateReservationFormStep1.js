@@ -30,7 +30,8 @@ const CreateReservationFormStep1 = () => {
   const [LicensePlate, setLicensePlate] = useState("");
   const [Garage, setGarage] = useState(null);
   const [ArrivalTime, setArrivalTime] = useState(null);
-  const [GarageID, setGarageID] = useState(null);
+  const [OpeningTime, setOpeningTime] = useState(null);
+  const [ClosingTime, setClosingTime] = useState(null);
   const [DepartureTime, setDepartureTime] = useState(null);
   const [TotalLicensePlate, setTotalLicensePlate] = useState([]);
   const [TotalGarage, setTotalGarage] = useState([]);
@@ -56,17 +57,19 @@ const CreateReservationFormStep1 = () => {
 
   useEffect(() => {
     async function AssignTotalSpaces() {
-      console.log(Garage)
       if (Garage != null)
-        setTotalSpaces(await getFreeSpaces(Garage));
+        setTotalSpaces(await getFreeSpaces(Garage.id));
+      setOpeningTime(dayjs(Garage.openingTime));
+      setClosingTime(dayjs(Garage.closingTime));
     }
     AssignTotalSpaces();
+
   }, [Garage])
 
   useEffect(() => {
     async function AssignAvailableSpaces() {
       if (Garage != null && ArrivalTime != null && DepartureTime != null) {
-        setAvailableSpaces(await getReservationAvailableSpaces(ArrivalTime, DepartureTime, Garage));
+        setAvailableSpaces(await getReservationAvailableSpaces(ArrivalTime, DepartureTime, Garage.id));
       }
     }
     AssignAvailableSpaces();
@@ -92,7 +95,7 @@ const CreateReservationFormStep1 = () => {
       let allSpaces = await getReservationAvailableSpaces(
         ArrivalTime,
         DepartureTime,
-        Garage
+        Garage.id
       )
 
       let car = await getCarIdByLicensePlate(LicensePlate);
@@ -168,6 +171,7 @@ const CreateReservationFormStep1 = () => {
       <div className="row justify-content-md-center">
         <div style={{ "text-align": "center" }}>
           <p style={{ "color": "grey" }}>Available parking spaces visible after filling in garage and time</p>
+          {OpeningTime != null ? (<p>Selected Garage open from {OpeningTime.format("HH:mm")} till {ClosingTime.format("HH:mm")}</p>) : <></>}
         </div>
 
         <div className="input-group mb-3">
@@ -177,11 +181,11 @@ const CreateReservationFormStep1 = () => {
               labelId="Garage"
               id="Garage"
               name="Garage"
-              value={Garage}
+              value={Garage != null ? Garage.id : null}
               label="Garage"
               onChange={(newValue) => {
-                setGarage(newValue.target.value);
-                  setUpdateDisplay(true);
+                setGarage(TotalGarage.find(x => x.id == newValue.target.value));
+                setUpdateDisplay(true);
               }}
             >
               {TotalGarage.map((garage) => {
@@ -227,13 +231,16 @@ const CreateReservationFormStep1 = () => {
                 ampm={false}
                 value={ArrivalTime}
                 onChange={(newValue) => {
+                  console.log(newValue)
                   setArrivalTime(newValue);
                 }}
 
                 onAccept={(newValue) => {
                   setUpdateDisplay(true);
                 }}
-                minDateTime={dayjs(new Date())}
+                minDate={dayjs(new Date())}
+                minTime={Garage != null ? OpeningTime : null}
+                maxTime={Garage != null ? ClosingTime : null}
                 required
               />
             </LocalizationProvider>
@@ -248,12 +255,15 @@ const CreateReservationFormStep1 = () => {
                 ampm={false}
                 value={DepartureTime == null ? ArrivalTime : DepartureTime}
                 onChange={(newValue) => {
+                  console.log(ClosingTime)
                   setDepartureTime(newValue);
                 }}
                 onAccept={(newValue) => {
                   setUpdateDisplay(true);
                 }}
-                minDateTime={ArrivalTime}
+                minTime={ArrivalTime}
+                minDate={ArrivalTime}
+                maxTime={Garage != null ? ClosingTime : null}
                 required
                 disabled={ArrivalTime == null}
               />
