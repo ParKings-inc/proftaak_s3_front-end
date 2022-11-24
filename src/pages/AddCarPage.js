@@ -10,12 +10,13 @@ import {
 import { userContext } from '../userContext'
 import { useState } from 'react'
 import { Input } from '@mui/material'
-import { AddCar } from '../services/CarService'
+import { AddCar, DoesLicenseExist, licenseValidation } from '../services/CarService'
 import { getAllCars } from '../services/CarService'
 import { getCarByUserId } from '../services/CarService'
 import { DeleteCar } from '../services/CarService'
 import '../style/AddCarPage.css'
 import {KentekenCheck} from '../components/LicenseValidation/kenteken-check-nl-class.js'
+import { useValidation } from '@mui/x-date-pickers/internals/hooks/validation/useValidation';
 //import {KentekenCheck} from 'rdw-kenteken-check'
 
 
@@ -31,35 +32,47 @@ const AddCarPage = () => {
         setCars(await getCarByUserId(user.sub))
       }
       AssignCars()
+      licenseValidation();
     }, [])
 
+    var validation = new Boolean;
 
     function licenseValidation(){
-      const outputElm = document.getElementById('kenteken-inline');
+      const outputElm = document.getElementById('license');
       const inputElm = document.getElementById('license');
 
       const kt = new KentekenCheck(document.getElementById('license').value, inputElm, outputElm, true);
       console.log("License validation")
-      //kt.formatLicense();
       kt.formatLicense();
       kt.bindInputListener();
-      console.log("Kentekencheck output: ", kt.valid)
 
-      // format only
-      const kt2 = new KentekenCheck('JFK01P')
-      outputElm.innerHTML = kt2.formatLicense();
+      validation = kt.valid;
+      console.log("Kentekencheck output: ", kt.valid)
     }
     
     function OnSubmit(){
         let LicensePlate = document.getElementById('license').value;
         licenseValidation();
-        /*let data = {
-            userID: user.sub,
-            kenteken: LicensePlate
-          }
-        console.log(data)
-        console.log(user)
-        AddCar(data)*/
+        if(validation){
+          document.getElementById('ValidationMessage').innerHTML = 'License is valid'
+          document.getElementById('ValidationMessage').style.color = 'green'
+          let data = {
+              userID: user.sub,
+              kenteken: LicensePlate
+            }
+          console.log(data)
+          console.log(user)
+          DoesLicenseExist(LicensePlate);
+          console.log("DoesLicenseExist: ", typeof licenseValidation);
+          if(licenseValidation){
+            document.getElementById('ValidationMessage').innerHTML = 'License already exists';
+            document.getElementById('ValidationMessage').style.color = 'red'
+         }
+          AddCar(data)
+        } else if(!validation){
+            document.getElementById('ValidationMessage').innerHTML = 'License is invalid'
+            document.getElementById('ValidationMessage').style.color = 'red'
+        }
     }
 
 
@@ -72,23 +85,12 @@ const AddCarPage = () => {
     <input type="text" className='text-input' id='license'></input>
     <button className='add-button' onClick={OnSubmit}>new license</button>
     </p>
+    <p id='ValidationMessage' className='center'></p>
     <h6 className='center mb-10 mt-10'>Your cars:</h6></div>
     <div>{cars.map((c) => <p className='table-container' key={c.id}>
       <b className='list-item'>{c.kenteken}</b>
       <button className='delete-button' onClick={() => {DeleteCar(c.id)}}>delete</button>
       </p>)}</div>
-      
-<div class="form-control">
-    <label for="kenteken-inline">html5 validation</label>
-    <input id="kenteken-inline"
-           class="html5-input"
-           type="text"
-           maxlength="6"
-           autocomplete="off"
-           pattern="^([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{2})([0-9]{2})([0-9]{2})|([0-9]{2})([0-9]{2})([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{2})|([0-9]{2})([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{2})([0-9]{2})|([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{2})([0-9]{2})([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{2})|([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{2})([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{2})([0-9]{2})|([0-9]{2})([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{2})([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{2})|([0-9]{2})([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{3})([0-9]{1})|([0-9]{1})([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{3})([0-9]{2})|([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{2})([0-9]{3})([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{1})|([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{1})([0-9]{3})([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{2})|([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{3})([0-9]{2})([bdfghjklmnprstvwxyzBDFGHJKLMNPRSTVWXYZ]{1})$"
-           required/>
-    <span class="valid-message"></span>
-</div>
     </div>
     
   )
