@@ -1,7 +1,5 @@
 const axios = require("axios");
 
-export var licenseValidation;
-
 export async function getAllCars() {
   try {
     const response = await axios.get("https://localhost:7205/api/Cars");
@@ -45,7 +43,6 @@ export async function DoesLicenseExist(id){
         `https://localhost:7205/api/Cars/LicenseExists/${id}`
       );
       //console.log("DoesLicenseExist: ", response.data);
-      licenseValidation = response.data;
       return response.data;
     } catch (error) {
       return [];

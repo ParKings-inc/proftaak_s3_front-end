@@ -20,6 +20,15 @@
     margin-bottom: 10px;
 }
 
+.position-relative{
+    position: relative;
+}
+
+.bottom{
+    position: absolute;
+    bottom: 0;
+}
+
 #Carcontainer {
     background-color: rgb(230, 230, 230);
     max-width: 1000px;
@@ -32,19 +41,14 @@
 }
 
 .table-container {
-    background-color: rgb(230, 230, 230);
     max-width: 400px;
     margin: auto;   
     display: grid;
     grid-template-columns: 70% 30%;
-    border: 1px solid #000000;
     padding: 10px 10px 10px 10px;
+    margin-bottom: 10px;
     border-radius: 5px;
     align-content: space-between;
-}
-
-.flex {
-    display: flex;
 }
 
 .list-item {
@@ -87,4 +91,92 @@
 }
 .text-input{
     text-align: center;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-65 {
+    width: 65%;
+}
+
+.mb-25 {
+    margin-bottom: 25px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.flex {
+    display: flex;
+}
+
+.row {
+    flex-direction: row;
+}
+
+.w-auto {
+    width: auto;
+}
+
+.w-80 {
+    width: 80%;
+}
+
+.w-35 {
+    width: 35%;
+}
+
+.w-45 {
+    width: 45%;
+}
+
+.w-47 {
+    width: 47%;
+}
+
+.text-sm {
+    font-size: 13px;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.p-2 {
+    padding: 2px;
+}
+
+.left-border {
+    border-radius: 0;
+    border-left: 4px solid red;
+}
+
+.centered {
+    justify-content: center;
+    align-items: center;
+}
+
+.white {
+    color: #FFFFFF;
+}
+
+.scale-2 {
+    transform: scale(1.5);
+}
+
+.decoration-none {
+    text-decoration: none;
+}
+
+.word-break {
+    word-wrap: break-word;
 }
