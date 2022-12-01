@@ -4,6 +4,7 @@ import {
     TextField,
     FormControl,
     Button,
+    Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
@@ -27,42 +28,27 @@ const ReservationDetails = () => {
             {/* Get garage */}
             <div className="input-group mb-3">
                 <FormControl fullWidth sx={{ m: 1 }}>
-                    Garage:
-                    <TextField value={reservation.GarageName} InputProps={{
-                        readOnly: true,
-                    }}></TextField>
+                    <Typography><b>Garage:</b> {reservation.GarageName}</Typography>
                 </FormControl>
             </div>
             <div className="input-group mb-3">
                 <FormControl fullWidth sx={{ m: 1 }}>
-                    LicensePlate:
-                    <TextField value={reservation.Kenteken} InputProps={{
-                        readOnly: true,
-                    }}></TextField>
+                    <Typography><b>LicensePlate:</b> {reservation.Kenteken}</Typography>
                 </FormControl>
             </div>
             <div className="input-group mb-3">
                 <FormControl fullWidth sx={{ m: 1 }}>
-                    Parkingspace:
-                    <TextField value={reservation.SpaceID + "-" + reservation.SpaceFloor + "-" + reservation.SpaceRow} InputProps={{
-                        readOnly: true,
-                    }}></TextField>
+                    <Typography><b>Parkingspace:</b> {reservation.SpaceID + "-" + reservation.SpaceFloor + "-" + reservation.SpaceRow}</Typography>
                 </FormControl>
             </div>
             <div className="input-group mb-3">
                 <FormControl fullWidth sx={{ m: 1 }}>
-                    ArrivalTime:
-                    <TextField value={dayjs(reservation.ArrivalTime).format("DD-MM-YYYY HH:mm")} InputProps={{
-                        readOnly: true,
-                    }}></TextField>
+                    <Typography><b>ArrivalTime:</b> {dayjs(reservation.ArrivalTime).format("DD-MM-YYYY HH:mm")}</Typography>
                 </FormControl>
             </div>
             <div className="input-group mb-3">
                 <FormControl fullWidth sx={{ m: 1 }}>
-                    DepartureTime:
-                    <TextField value={dayjs(reservation.DepartureTime).format("DD-MM-YYYY HH:mm")} InputProps={{
-                        readOnly: true,
-                    }}></TextField>
+                    <Typography><b>DepartureTime:</b> {dayjs(reservation.DepartureTime).format("DD-MM-YYYY HH:mm")}</Typography>
                 </FormControl>
             </div>
 
