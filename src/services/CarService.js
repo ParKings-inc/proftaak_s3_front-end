@@ -37,12 +37,12 @@ export async function AddCar(data)
   else{
   console.log('helaas')}
 }
-async function DoesLicenseExist(id){
+export async function DoesLicenseExist(id){
     try {
       const response = await axios.get(
         `https://localhost:7205/api/Cars/LicenseExists/${id}`
       );
-      console.log(response.data);
+      //console.log("DoesLicenseExist: ", response.data);
       return response.data;
     } catch (error) {
       return [];
