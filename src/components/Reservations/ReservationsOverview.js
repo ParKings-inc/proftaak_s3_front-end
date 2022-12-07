@@ -62,7 +62,7 @@ const ReservationOverview = (props) => {
                                         <b>License plate:</b> {reservation.Kenteken}
                                     </Typography>
                                 </div>
-                                <Typography className='text-warning' sx={{ marginTop: 1 }} color="text.primary">
+                                <Typography className={reservation.Status == "Accepted" ? "text-success" : reservation.Status == "Pending" ? "text-warning" : "text-danger"} sx={{ marginTop: 1 }} color="text.primary">
                                     {reservation.Status}
                                 </Typography>
                             </CardContent>
