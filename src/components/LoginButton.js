@@ -2,16 +2,15 @@ import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import AccountService from "../services/AccountService";
-import { userContext } from "../userContext";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SignUpPage = (props) => {
+ var SignUpPage = (props) => {
   const navigate = useNavigate();
-  const [stateCredentials, setStateCredentials] = useState(null);
+
   const service = new AccountService();
   return (
     <>
+    <div className="">
       <GoogleOAuthProvider clientId="470134517886-f5sgc46163gim5b4dtba1j3egd06hmoa.apps.googleusercontent.com">
         <GoogleLogin
           buttonText="Sign In with Google"
@@ -29,6 +28,7 @@ const SignUpPage = (props) => {
           cookiePolicy={"single_host_origin"}
         />
       </GoogleOAuthProvider>
+      </div>
     </>
   );
 };
