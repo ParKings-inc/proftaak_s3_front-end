@@ -19,6 +19,7 @@ import ReservationAvailableSpaces from "./pages/ReservationPages/Create/Reservat
 import ReservationDetailsPage from "./pages/ReservationPages/View/Details/ReservationDetailsPage";
 import ReservationUpdatePage from "./pages/ReservationPages/Update/ReservationUpdatePage";
 import ReservationDeletePage from "./pages/ReservationPages/Delete/ReservationDeletePage";
+import ReceiptOverviewPage from "./pages/ReceiptPages/View/ReceiptOverviewPage";
 import { ToastContainer } from "react-toastify";
 
 function App() {
@@ -85,6 +86,7 @@ function App() {
             <Route path="/reservation/Update" element={<ReservationUpdatePage />}></Route>
             {/* Delete */}
             <Route path="/reservation/Delete" element={<ReservationDeletePage />}></Route>
+            <Route path="/Receipt" element={<ReceiptOverviewPage />}></Route>
           </Routes>
         </BrowserRouter>
       </userContext.Provider>
