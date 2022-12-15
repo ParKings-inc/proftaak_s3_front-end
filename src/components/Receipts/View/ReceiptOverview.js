@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 const ReceiptOverview = (props) => {
 
     function ToDetailsPage(Receipts) {
-        navigate('/Receipts/Details/', { state: { Receipts: [Receipts] } })
+        navigate('/receipt/Details', { state: { Receipts: [Receipts] } })
     }
 
     const navigate = useNavigate();
