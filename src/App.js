@@ -21,6 +21,8 @@ import ReservationUpdatePage from "./pages/ReservationPages/Update/ReservationUp
 import ReservationDeletePage from "./pages/ReservationPages/Delete/ReservationDeletePage";
 import { ToastContainer } from "react-toastify";
 
+import WebSocketsSpacePage from "./pages/WebSocketsGetSpacePage";
+
 function App() {
   const [stateUser, setStateUser] = useState(null);
   const service = new AccountService();
@@ -85,6 +87,7 @@ function App() {
             <Route path="/reservation/Update" element={<ReservationUpdatePage />}></Route>
             {/* Delete */}
             <Route path="/reservation/Delete" element={<ReservationDeletePage />}></Route>
+            <Route path="/websockets" element={<WebSocketsGetSpacePage />}></Route>
           </Routes>
         </BrowserRouter>
       </userContext.Provider>
