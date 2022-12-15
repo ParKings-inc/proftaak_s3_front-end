@@ -21,7 +21,7 @@ import ReservationUpdatePage from "./pages/ReservationPages/Update/ReservationUp
 import ReservationDeletePage from "./pages/ReservationPages/Delete/ReservationDeletePage";
 import { ToastContainer } from "react-toastify";
 
-import WebSocketsSpacePage from "./pages/WebSocketsGetSpacePage";
+import WebSocketsGetSpacePage from "./pages/WebSocketsGetSpacePage";
 
 function App() {
   const [stateUser, setStateUser] = useState(null);

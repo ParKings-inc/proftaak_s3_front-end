@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
+import axios from 'axios';
 
 const WebSocketsGetSpacePage = () => {
     const [ spaces, setSpaces ] = useState([]);
@@ -39,7 +40,7 @@ const WebSocketsGetSpacePage = () => {
 
     const requestSpaces = async () => {
         try {
-            await fetch("https://localhost:7205/api/Spaces/garage/2")
+            await axios.get("https://localhost:7205/api/Spaces/garage/2")
                     .then((Response) => console.log(Response));
         }
         catch(e) {
