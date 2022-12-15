@@ -1,16 +1,15 @@
-import React, { Component, ReactNode, useEffect, useState } from "react";
-import FreeSpaceDisplay from "../components/FreeSpaceDisplay";
-import LocalParkingIcon from '@mui/icons-material/LocalParking';
+import { useEffect, useState } from "react";
 import SettingsIcon from '@mui/icons-material/Settings';
-import Carousel from 'react-bootstrap/Carousel';
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import '../style/HomePage.css';
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import Avatar from '@mui/material/Avatar';
+import dayjs from "dayjs";
+import { CarouselItem } from "react-bootstrap";
+import Carousel from 'react-bootstrap/Carousel';
+import { useNavigate } from "react-router-dom";
+import GarageSimulationButton from "../components/simulation/GarageSimulationButton";
 import AccountService from "../services/AccountService";
 import { getReservationsByUser } from "../services/ReservationService";
-import { CarouselItem } from "react-bootstrap";
-import dayjs from "dayjs";
+import '../style/HomePage.css';
 
 
 export default function HomePage() {
@@ -115,10 +114,7 @@ export default function HomePage() {
                         </Carousel>
 
                         <div className="flex row full-width space-evenly full-height max-h-35 px-4">
-                            <div className="w-40 full-height border rounded-3 shadow flex column vertical-center horizontal-center">
-                                <LocalParkingIcon className="text-primary" sx={{fontSize: "60px", marginBottom: "10px"}}/>
-                                <Typography variant="body1">Enter Garage</Typography>
-                            </div>
+                            <GarageSimulationButton />
                             <div onClick={GoToReservations} className="w-40 full-height border rounded-3 shadow flex column vertical-center horizontal-center">
                                 <SettingsIcon className="text-primary" sx={{fontSize: "60px", marginBottom: "10px"}}/>
                                 <Typography variant="body1">Manage</Typography>
