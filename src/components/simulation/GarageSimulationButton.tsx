@@ -37,7 +37,9 @@ export default class GarageSimulationButton extends Component<Props, State> {
     }
 
     private async enterGarage(): Promise<void> {
-        await GarageSimulationService.enterGarage(GarageSimulationButton.LICENCE_PLATE);
+        if (!await GarageSimulationService.enterGarage(GarageSimulationButton.LICENCE_PLATE)) {
+            return;
+        }
         this.setState({
             inside: true
         });
