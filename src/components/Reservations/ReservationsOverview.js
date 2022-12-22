@@ -37,7 +37,6 @@ const ReservationOverview = (props) => {
                                 <div className='flex flex-row justify-between'>
                                     {/* Maybe add "Arrival time - End time" in front more information. */}
                                     <Typography variant="h5" component="div">
-                                        {console.log(reservation)}
                                         {reservation.GarageName}
                                     </Typography>
 
@@ -62,7 +61,7 @@ const ReservationOverview = (props) => {
                                         <b>License plate:</b> {reservation.Kenteken}
                                     </Typography>
                                 </div>
-                                <Typography className={reservation.Status == "Accepted" ? "text-success" : reservation.Status == "Pending" ? "text-warning" : "text-danger"} sx={{ marginTop: 1 }} color="text.primary">
+                                <Typography className={reservation.Status == "Accepted" ? "text-success" : reservation.Status == "Pending" ? "text-warning" : reservation.Status == "Denied" ? "text-danger" : "text-purple"} sx={{ marginTop: 1 }} color="text.primary">
                                     {reservation.Status}
                                 </Typography>
                             </CardContent>

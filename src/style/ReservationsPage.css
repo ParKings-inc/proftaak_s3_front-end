@@ -89,3 +89,7 @@
 .word-break {
     word-wrap: break-word;
 }
+
+.text-purple {
+    color: rebeccapurple!important;
+} 

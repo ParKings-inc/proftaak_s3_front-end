@@ -1,22 +1,23 @@
-import createMollieClient from '@mollie/api-client';
+import axios from 'axios';
 
-const API_KEY = 'test_3zANg8a2rfkhPuK7GnN7QrewHxRmRd';
-const mollieClient = createMollieClient({ apiKey: API_KEY });
-
-export async function createPayment(){
-    await mollieClient.payments.create({
-        amount: {
-            value: '5.00',
-            currency: 'EUR'
-        },
-        method: ['ideal', 'paypal'],
-        description: 'Parking fees',
-        redirectUrl: '/',
-        webhookUrl: '/'
-    }).then((payment) => {
-        console.log(payment.getCheckoutUrl());
-    }).catch((error) => {
+export async function createPayment(reservationCost){
+    try {
+        const response = await axios.post("https://localhost:7205/api/Payments/"+reservationCost);
+        return response.data;
+    } catch (error) {
         console.log(error);
-    });
+    }
+}
 
+export async function getPaymentById(id){
+    try {
+        const response = await axios.get(`https://localhost:7205/api/Payments/${id}`)
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export function goToCheckoutPage(url){
+    window.location.href = url;
 }

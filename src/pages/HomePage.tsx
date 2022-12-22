@@ -8,7 +8,8 @@ import '../style/HomePage.css';
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import Avatar from '@mui/material/Avatar';
 import AccountService from "../services/AccountService";
-import { getReservationsByUser } from "../services/ReservationService";
+import { createPayment, getPaymentById, goToCheckoutPage } from "../services/PaymentService";
+import { getReservationsByUser, getReservationById, putReservation } from "../services/ReservationService";
 import { CarouselItem } from "react-bootstrap";
 import dayjs from "dayjs";
 
