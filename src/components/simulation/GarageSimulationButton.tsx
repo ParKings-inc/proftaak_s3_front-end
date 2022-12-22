@@ -1,6 +1,7 @@
 import { Component, ReactNode } from "react";
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import { Typography } from "@mui/material";
+import GarageSimulationService from "../../services/simulation/GarageSimulationService";
 
 interface Props {}
 
@@ -9,6 +10,8 @@ interface State {
 }
 
 export default class GarageSimulationButton extends Component<Props, State> {
+    private static readonly LICENCE_PLATE: string = "AB-123-CD";
+
     public constructor(props: Props) {
         super(props);
         this.state = {
@@ -18,16 +21,31 @@ export default class GarageSimulationButton extends Component<Props, State> {
 
     public render(): ReactNode {
         return (
-            <div onClick={() => this.toggleGarage()} className="w-40 full-height border rounded-3 shadow flex column vertical-center horizontal-center">
+            <div onClick={async () => await this.toggleGarage()} className="w-40 full-height border rounded-3 shadow flex column vertical-center horizontal-center">
                 <LocalParkingIcon className="text-primary" sx={{ fontSize: "60px", marginBottom: "10px" }} />
                 <Typography variant="body1">{this.getGarageText()}</Typography>
             </div>
         );
     }
 
-    private toggleGarage(): void {
+    private async toggleGarage(): Promise<void> {
+        if (!this.state.inside) {
+            await this.enterGarage();
+            return;
+        }
+        await this.leaveGarage();
+    }
+
+    private async enterGarage(): Promise<void> {
+        await GarageSimulationService.enterGarage(GarageSimulationButton.LICENCE_PLATE);
         this.setState({
-            inside: !this.state.inside
+            inside: true
+        });
+    }
+
+    private async leaveGarage(): Promise<void> {
+        this.setState({
+            inside: false
         });
     }
 
