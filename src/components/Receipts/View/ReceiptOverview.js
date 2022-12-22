@@ -39,7 +39,7 @@ const ReceiptOverview = (props) => {
 
                                 <div className='flex flex-row justify-between'>
                                     <Typography color="text.secondary">
-                                        <b>Price:</b> {Receipts.Price}
+                                        <b>Price:</b> {Receipts.Price + " Euro"}
                                     </Typography>
                                 </div>
                             </CardContent>

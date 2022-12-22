@@ -1,6 +1,6 @@
 
 import React, { useContext, useEffect, useState } from 'react'
-import { getAllReceipts } from "../../../services/ReceiptService";
+import { getReceiptsByUser } from "../../../services/ReceiptService";
 import ReceiptOverview from "../../../components/Receipts/View/ReceiptOverview";
 
 
@@ -21,7 +21,7 @@ const ReceiptOverviewPage = () => {
     useEffect(() => {
         async function AsignValue() {
             if (user != null) {
-                setReceipts(await getAllReceipts())
+                setReceipts(await getReceiptsByUser(user.user.sub))
             }
         }
         AsignValue();
