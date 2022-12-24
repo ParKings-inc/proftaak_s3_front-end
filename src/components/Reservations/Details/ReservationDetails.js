@@ -52,15 +52,19 @@ const ReservationDetails = () => {
             }
             
             if(paymentId == null){
-                const createdPayment = await createPayment(cost);
+                const createdPayment = await createPayment(cost, reservation.id);
+                reservation.Id = reservation.id
                 reservation.payment_id = createdPayment.id;
+
+                console.log("EDITED RESERVATION PAYMENT_ID TO" + reservation.payment_id);
 
                 reservation.ArrivalTime = new Date(reservation.arrivalTime);
                 reservation.DepartureTime = new Date(reservation.departureTime);
     
-                reservation.arrivalTime = new Date(reservation.arrivalTime);
-                reservation.departureTime = new Date(reservation.departureTime);
+                // reservation.arrivalTime = new Date(reservation.arrivalTime);
+                // reservation.departureTime = new Date(reservation.departureTime);
                 
+                // RESERVATION PAYMENT_ID IN DB WON'T EDIT
                 const statusMessage = await putReservation(reservation);
                 
                 goToCheckoutPage(createdPayment.links.checkout.href);

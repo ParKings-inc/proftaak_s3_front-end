@@ -1,16 +1,17 @@
-import React, { Component, ReactNode, useEffect, useState } from "react";
-import FreeSpaceDisplay from "../components/FreeSpaceDisplay";
-import LocalParkingIcon from '@mui/icons-material/LocalParking';
-import SettingsIcon from '@mui/icons-material/Settings';
-import Carousel from 'react-bootstrap/Carousel';
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import '../style/HomePage.css';
-import { Button, Card, CardContent, Typography } from "@mui/material";
-import Avatar from '@mui/material/Avatar';
-import AccountService from "../services/AccountService";
-import { createPayment, getPaymentById, goToCheckoutPage } from "../services/PaymentService";
 import { getReservationsByUser, getReservationById, putReservation } from "../services/ReservationService";
+import { createPayment, getPaymentById, goToCheckoutPage } from "../services/PaymentService";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import React, { Component, ReactNode, useEffect, useState, useRef } from "react";
+import { Button, Card, CardContent, Typography } from "@mui/material";
+import LocalParkingIcon from '@mui/icons-material/LocalParking';
+import FreeSpaceDisplay from "../components/FreeSpaceDisplay";
+import SettingsIcon from '@mui/icons-material/Settings';
+import AccountService from "../services/AccountService";
+import Carousel from 'react-bootstrap/Carousel';
 import { CarouselItem } from "react-bootstrap";
+import Avatar from '@mui/material/Avatar';
+import { toast } from 'react-toastify';
+import '../style/HomePage.css';
 import dayjs from "dayjs";
 
 
@@ -19,7 +20,9 @@ export default function HomePage() {
     const navigate = useNavigate();
     const [stateReservations, setStatereservations] = useState<any[]>([]);
     const [stateUser, setstateUser] = useState<any>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
     const unparsedJWT = service.getUser();
+    const toastrShownRef = useRef(false);
 
     let user: any;
     let dateToday: any;
@@ -39,6 +42,19 @@ export default function HomePage() {
         setStatereservations(reservationsToday);
     }
 
+    function toasrMessage(message: String) {
+        toast.success(message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+        })
+    }
+
     function GoToReservations(){
         navigate("reservations");
     }
@@ -55,7 +71,38 @@ export default function HomePage() {
         setstateUser(user);
         getReservationsOfToday();
 
-    }, [stateReservations.length]);
+        if(toastrShownRef.current) return;
+        toastrShownRef.current = true;
+        
+        const ridParam = searchParams.get("rid");
+        async function CheckForPayment(){
+            if(ridParam != null){
+                try {
+                    const reservation = await getReservationById(ridParam);
+                    const payment = await getPaymentById(reservation.payment_id);
+
+                    if(payment.status == "paid"){
+                        reservation.status = "Paid";
+                        reservation.Id = reservation.id;
+                        reservation.arrivalTime = new Date(reservation.arrivalTime);
+                        reservation.departureTime = new Date(reservation.departureTime);
+
+                        reservation.ArrivalTime = new Date(reservation.arrivalTime);
+                        reservation.DepartureTime = new Date(reservation.departureTime);
+
+
+                        const message = await putReservation(reservation);
+                        toasrMessage("You have succesfully paid");
+                    }
+
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        }
+        CheckForPayment();
+            
+    }, []);
 
     return (
         <div className="eighty-screen flex flex-column">
