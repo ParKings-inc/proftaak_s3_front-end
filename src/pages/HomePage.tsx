@@ -55,6 +55,19 @@ export default function HomePage() {
         })
     }
 
+    function toastrMessageError(message: String){
+        toast.error(message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+        })
+    }
+
     function GoToReservations(){
         navigate("reservations");
     }
@@ -70,38 +83,6 @@ export default function HomePage() {
 
         setstateUser(user);
         getReservationsOfToday();
-
-        if(toastrShownRef.current) return;
-        toastrShownRef.current = true;
-        
-        const ridParam = searchParams.get("rid");
-        async function CheckForPayment(){
-            if(ridParam != null){
-                try {
-                    const reservation = await getReservationById(ridParam);
-                    const payment = await getPaymentById(reservation.payment_id);
-
-                    if(payment.status == "paid"){
-                        reservation.status = "Paid";
-                        reservation.Id = reservation.id;
-                        reservation.arrivalTime = new Date(reservation.arrivalTime);
-                        reservation.departureTime = new Date(reservation.departureTime);
-
-                        reservation.ArrivalTime = new Date(reservation.arrivalTime);
-                        reservation.DepartureTime = new Date(reservation.departureTime);
-
-
-                        const message = await putReservation(reservation);
-                        toasrMessage("You have succesfully paid");
-                    }
-
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        }
-        CheckForPayment();
-            
     }, []);
 
     return (
@@ -123,7 +104,20 @@ export default function HomePage() {
                                 const date = dayjs(reservation.ArrivalTime).format("DD-MM-YYYY")
                                 const departureDate = new Date(reservation.DepartureTime);
                                 const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
+                                let textColor;
 
+                                switch (reservation.Status) {
+                                    case "Paid":
+                                        textColor = "text-success";
+                                        break;
+                                    case "Awaiting payment":
+                                        textColor = "text-purple";
+                                        break;
+
+                                    default:
+                                        textColor = "text-warning";
+                                        break;
+                                }
                                 return (
                                     <CarouselItem key={index}>
                                         <div className='w-80 h-40' style={{margin: "auto", overflow: "auto"}}>
@@ -149,7 +143,7 @@ export default function HomePage() {
                                                             <b>License plate:</b> {reservation.Kenteken}
                                                         </Typography>
                                                     </div>
-                                                    <Typography className='text-warning' sx={{ marginTop: 1 }} color="text.primary">
+                                                    <Typography className={textColor} sx={{ marginTop: 1 }} color="text.primary">
                                                         {reservation.Status}
                                                     </Typography>
                                                 </CardContent>
