@@ -12,6 +12,15 @@ export async function getAllReservations() {
   }
 }
 
+export async function getReservationById(id){
+  try {
+    const response = await axios.get(api + `Reservations/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error); 
+  }
+}
+
 export async function getReservationsByUser(id) {
   try {
     const response = await axios.get(api + `Reservations/User/${id}`);
@@ -56,6 +65,9 @@ export async function postReservation(data) {
 }
 
 export async function putReservation(reservationbody) {
+  console.log("RESERVATION BODY");
+  console.log(reservationbody);
+  console.log("RESERVATION PUT");
   try {
     // if you don't format the times the times get confused and put back by 1 hour.
     // I know its bad practice to put the format here. But this is temporary, I want to discuss this bug. So to keep this clear, I will keep it here. haha that rhymes.

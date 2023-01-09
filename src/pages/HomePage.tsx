@@ -1,15 +1,17 @@
-import React, { Component, ReactNode, useEffect, useState } from "react";
-import FreeSpaceDisplay from "../components/FreeSpaceDisplay";
-import LocalParkingIcon from '@mui/icons-material/LocalParking';
-import SettingsIcon from '@mui/icons-material/Settings';
-import Carousel from 'react-bootstrap/Carousel';
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import '../style/HomePage.css';
+import { getReservationsByUser, getReservationById, putReservation } from "../services/ReservationService";
+import { createPayment, getPaymentById, goToCheckoutPage } from "../services/PaymentService";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import React, { Component, ReactNode, useEffect, useState, useRef } from "react";
 import { Button, Card, CardContent, Typography } from "@mui/material";
-import Avatar from '@mui/material/Avatar';
+import LocalParkingIcon from '@mui/icons-material/LocalParking';
+import FreeSpaceDisplay from "../components/FreeSpaceDisplay";
+import SettingsIcon from '@mui/icons-material/Settings';
 import AccountService from "../services/AccountService";
-import { getReservationsByUser } from "../services/ReservationService";
+import Carousel from 'react-bootstrap/Carousel';
 import { CarouselItem } from "react-bootstrap";
+import Avatar from '@mui/material/Avatar';
+import { toast } from 'react-toastify';
+import '../style/HomePage.css';
 import dayjs from "dayjs";
 
 
@@ -18,7 +20,9 @@ export default function HomePage() {
     const navigate = useNavigate();
     const [stateReservations, setStatereservations] = useState<any[]>([]);
     const [stateUser, setstateUser] = useState<any>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
     const unparsedJWT = service.getUser();
+    const toastrShownRef = useRef(false);
 
     let user: any;
     let dateToday: any;
@@ -38,6 +42,32 @@ export default function HomePage() {
         setStatereservations(reservationsToday);
     }
 
+    function toasrMessage(message: String) {
+        toast.success(message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+        })
+    }
+
+    function toastrMessageError(message: String){
+        toast.error(message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+        })
+    }
+
     function GoToReservations(){
         navigate("reservations");
     }
@@ -53,8 +83,7 @@ export default function HomePage() {
 
         setstateUser(user);
         getReservationsOfToday();
-
-    }, [stateReservations.length]);
+    }, []);
 
     return (
         <div className="eighty-screen flex flex-column">
@@ -75,7 +104,20 @@ export default function HomePage() {
                                 const date = dayjs(reservation.ArrivalTime).format("DD-MM-YYYY")
                                 const departureDate = new Date(reservation.DepartureTime);
                                 const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
+                                let textColor;
 
+                                switch (reservation.Status) {
+                                    case "Paid":
+                                        textColor = "text-success";
+                                        break;
+                                    case "Awaiting payment":
+                                        textColor = "text-purple";
+                                        break;
+
+                                    default:
+                                        textColor = "text-warning";
+                                        break;
+                                }
                                 return (
                                     <CarouselItem key={index}>
                                         <div className='w-80 h-40' style={{margin: "auto", overflow: "auto"}}>
@@ -101,7 +143,7 @@ export default function HomePage() {
                                                             <b>License plate:</b> {reservation.Kenteken}
                                                         </Typography>
                                                     </div>
-                                                    <Typography className='text-warning' sx={{ marginTop: 1 }} color="text.primary">
+                                                    <Typography className={textColor} sx={{ marginTop: 1 }} color="text.primary">
                                                         {reservation.Status}
                                                     </Typography>
                                                 </CardContent>

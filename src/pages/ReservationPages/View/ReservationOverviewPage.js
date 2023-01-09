@@ -1,12 +1,14 @@
 
-import React, { useContext, useEffect, useState } from 'react'
-import { getReservationsByUser } from "../../../services/ReservationService";
+import React, { useContext, useEffect, useState, useRef } from 'react'
+import { getReservationsByUser, getReservationById, putReservation } from "../../../services/ReservationService";
 import ReservationsOverview from "../../../components/Reservations/ReservationsOverview";
+import { createPayment, getPaymentById, goToCheckoutPage } from "../../../services/PaymentService";
 
-
+import AccountService from "../../../services/AccountService";
+import { toast } from 'react-toastify';
 
 import { userContext } from '../../../userContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import "../../../style/ReservationsPage.css";
@@ -17,17 +19,90 @@ import { Typography } from '@mui/material';
 
 const ReservationOverviewPage = () => {
     const user = useContext(userContext);
-    
+    const service = new AccountService();
+    const toastrShownRef = useRef(false);
     const [reservations, setReservations] = useState([])
+    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
+
+    function toasrMessage(message) {
+        toast.success(message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+        })
+    }
+
+    function toastrMessageError(message){
+        toast.error(message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+        })
+    }
+
+
     useEffect(() => {
         async function AsignValue() {
-            if (user != null) {
+
+            if(user.user == null && service.getUser() != null){
+                user.userLogin(service.getUser());
+            }
+
+            if (user.user != null) {
                 setReservations(await getReservationsByUser(user.user.sub))
             }
         }
+        
+        if(toastrShownRef.current) return;
+        toastrShownRef.current = true;
+        
+        const ridParam = searchParams.get("rid");
+        async function CheckForPayment(){
+
+            if(ridParam != null){
+                try {
+                    const reservation = await getReservationById(ridParam);
+                    const payment = await getPaymentById(reservation.payment_id);
+
+                    if(payment.status == "paid"){
+                        reservation.status = "Paid";
+                        reservation.Id = reservation.id;
+                        reservation.arrivalTime = new Date(reservation.arrivalTime);
+                        reservation.departureTime = new Date(reservation.departureTime);
+
+                        reservation.ArrivalTime = new Date(reservation.arrivalTime);
+                        reservation.DepartureTime = new Date(reservation.departureTime);
+
+
+                        const message = await putReservation(reservation);
+                        toasrMessage("You have succesfully paid");
+                    }
+
+                    if(payment.status != "paid"){
+                        toastrMessageError("You have not paid");
+                    }
+
+                } catch (error) {
+                    console.log(error);
+                }
+                navigate('/');
+            }
+        }
         AsignValue();
+        CheckForPayment();
     }, [user])
+
 
     function Home() {
         navigate("/")
