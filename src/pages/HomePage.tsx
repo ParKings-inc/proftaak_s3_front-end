@@ -1,3 +1,15 @@
+import { useEffect, useState } from "react";
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Card, CardContent, Typography } from "@mui/material";
+import Avatar from '@mui/material/Avatar';
+import dayjs from "dayjs";
+import { CarouselItem } from "react-bootstrap";
+import Carousel from 'react-bootstrap/Carousel';
+import { useNavigate } from "react-router-dom";
+import GarageSimulationButton from "../components/simulation/GarageSimulationButton";
+import AccountService from "../services/AccountService";
+import { getReservationsByUser } from "../services/ReservationService";
+import '../style/HomePage.css';
 import { getReservationsByUser, getReservationById, putReservation } from "../services/ReservationService";
 import { createPayment, getPaymentById, goToCheckoutPage } from "../services/PaymentService";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
@@ -15,6 +27,7 @@ import '../style/HomePage.css';
 import dayjs from "dayjs";
 
 
+
 export default function HomePage() {
     const service = new AccountService();
     const navigate = useNavigate();
@@ -27,20 +40,22 @@ export default function HomePage() {
     let user: any;
     let dateToday: any;
 
-    async function getReservationsOfToday(){
+    async function getReservationsOfToday() {
         const reservations = await getReservationsByUser(user.sub);
         let reservationsToday: any[] = [];
 
         reservations.map((reservation: any) => {
             const reservationDate = new Date(reservation.ArrivalTime).toDateString();
 
-            if(dateToday == reservationDate){
+            if (dateToday == reservationDate) {
                 reservationsToday.push(reservation);
             }
         })
 
+        console.log(reservationsToday);
         setStatereservations(reservationsToday);
     }
+
 
     function toasrMessage(message: String) {
         toast.success(message, {
@@ -69,15 +84,16 @@ export default function HomePage() {
     }
 
     function GoToReservations(){
+
         navigate("reservations");
     }
 
     useEffect(() => {
-        if(unparsedJWT == null) {
+        if (unparsedJWT == null) {
             navigate("/login");
             return;
         }
-        
+
         user = service.parseJwt(unparsedJWT);
         dateToday = new Date().toDateString();
 
@@ -87,14 +103,15 @@ export default function HomePage() {
 
     return (
         <div className="eighty-screen flex flex-column">
-            <div className="full-width full-height" style={{display: "Flex", flexDirection: "column"}}>
+            <div className="full-width full-height" style={{ display: "Flex", flexDirection: "column" }}>
                 <div className="bg-primary h-40 skew flex horizontal-center padding-top-50">
                     <div className="flex column vertical-center">
-                        { stateUser != null && <Avatar alt={stateUser.name} src={stateUser.picture} sx={{ width: 100, height: 100, marginBottom: "20px" }}/> }
-                        { stateUser != null && <Typography className="text-white" variant="h5">{ stateUser.name }</Typography> }
+                        {stateUser != null && <Avatar alt={stateUser.name} src={stateUser.picture} sx={{ width: 100, height: 100, marginBottom: "20px" }} />}
+                        {stateUser != null && <Typography className="text-white" variant="h5">{stateUser.name}</Typography>}
                     </div>
                 </div>
                 <div className="flex column vertical-center h-50">
+
                     <Typography className="text-black" variant="h6">You have <span className="text-primary text-26"> { stateReservations.length } </span> reservations today!</Typography>
 
                     <Carousel className="bg-primary" style={{width: "80%", backgroundColor: "#b8b8b8", marginBottom: "20px", padding: "10px"}}>
@@ -146,28 +163,35 @@ export default function HomePage() {
                                                     <Typography className={textColor} sx={{ marginTop: 1 }} color="text.primary">
                                                         {reservation.Status}
                                                     </Typography>
-                                                </CardContent>
-                                            </Card>
-                                        </div>
-                                    </CarouselItem>
-                                )
 
-                            }) 
-                            }
-                        </Carousel>
+                                                </div>
+                                                <div className='flex flex-row justify-between'>
+                                                    <Typography color="text.secondary">
+                                                        <b>License plate:</b> {reservation.Kenteken}
+                                                    </Typography>
+                                                </div>
+                                                <Typography className='text-warning' sx={{ marginTop: 1 }} color="text.primary">
+                                                    {reservation.Status}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </div>
+                                </CarouselItem>
+                            )
 
-                        <div className="flex row full-width space-evenly full-height max-h-35 px-4">
-                            <div className="w-40 full-height border rounded-3 shadow flex column vertical-center horizontal-center">
-                                <LocalParkingIcon className="text-primary" sx={{fontSize: "60px", marginBottom: "10px"}}/>
-                                <Typography variant="body1">Enter Garage</Typography>
-                            </div>
-                            <div onClick={GoToReservations} className="w-40 full-height border rounded-3 shadow flex column vertical-center horizontal-center">
-                                <SettingsIcon className="text-primary" sx={{fontSize: "60px", marginBottom: "10px"}}/>
-                                <Typography variant="body1">Manage</Typography>
-                            </div>
+                        })
+                        }
+                    </Carousel>
+
+                    <div className="flex row full-width space-evenly full-height max-h-35 px-4">
+                        <GarageSimulationButton />
+                        <div onClick={GoToReservations} className="w-40 full-height border rounded-3 shadow flex column vertical-center horizontal-center">
+                            <SettingsIcon className="text-primary" sx={{ fontSize: "60px", marginBottom: "10px" }} />
+                            <Typography variant="body1">Manage</Typography>
                         </div>
+                    </div>
                 </div>
-            </div>  
+            </div>
         </div>
     );
 }
