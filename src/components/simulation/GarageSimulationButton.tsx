@@ -13,7 +13,7 @@ interface State {
 }
 
 export default class GarageSimulationButton extends Component<Props, State> {
-    private static readonly LICENCE_PLATE: string = "JJ-887-F";
+    private static readonly LICENCE_PLATE: string = "GT-45-GF";
 
     public constructor(props: Props) {
         super(props);

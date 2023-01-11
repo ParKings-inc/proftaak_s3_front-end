@@ -17,7 +17,7 @@ import {
   getCarByUserId,
   getCarIdByLicensePlate,
 } from "../../../../services/CarService";
-import { postReservation } from "../../../../services/ReservationService";
+import { postReservation, getAllReservations } from "../../../../services/ReservationService";
 import { getReservationAvailableSpaces } from "../../../../services/ReservationService";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -113,6 +113,10 @@ const CreateReservationFormStep1 = () => {
           let response = await postReservation(reservationbody);
           if (response.id >= 0) {
             toasrMessage("success", "Reservation succesfully created");
+            //websocket
+            getAllReservations()
+            console.log("websocket")
+
             navigate("/reservations");
           } else {
             toasrMessage("error", response);
