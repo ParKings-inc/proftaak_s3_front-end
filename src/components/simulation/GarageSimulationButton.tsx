@@ -2,6 +2,7 @@ import { Component, ReactNode } from "react";
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import { Typography } from "@mui/material";
 import GarageSimulationService from "../../services/simulation/GarageSimulationService";
+import { getAllReservations } from "../../services/ReservationService";
 
 interface Props {
     getReservation: any;

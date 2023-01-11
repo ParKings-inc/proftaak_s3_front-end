@@ -4,7 +4,7 @@ const api = "https://localhost:7205/api/";
 
 export async function getAllReservations() {
   try {
-    const response = await axios.get(api);
+    const response = await axios.get(api + "Reservations");
 
     return response.data;
   } catch (error) {

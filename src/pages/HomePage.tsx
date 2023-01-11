@@ -4,7 +4,7 @@ import { CarouselItem } from "react-bootstrap";
 import Carousel from 'react-bootstrap/Carousel';
 import GarageSimulationButton from "../components/simulation/GarageSimulationButton";
 import AccountService from "../services/AccountService";
-import { getReservationsByUser } from "../services/ReservationService";
+import { getReservationsByUser, getAllReservations } from "../services/ReservationService";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Card, CardContent, Typography } from "@mui/material";

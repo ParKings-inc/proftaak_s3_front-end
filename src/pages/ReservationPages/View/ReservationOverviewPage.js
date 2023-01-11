@@ -2,10 +2,11 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { getReservationsByUser, getReservationById, putReservation } from "../../../services/ReservationService";
 import ReservationsOverview from "../../../components/Reservations/ReservationsOverview";
-import { createPayment, getPaymentById, goToCheckoutPage } from "../../../services/PaymentService";
+import { createPayment, getPaymentById, goToCheckoutPage, getRevenue } from "../../../services/PaymentService";
 
 import AccountService from "../../../services/AccountService";
 import { toast } from 'react-toastify';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 
 import { userContext } from '../../../userContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -14,6 +15,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import "../../../style/ReservationsPage.css";
 import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import { getAllReservations } from '../../../services/ReservationService';
 
 
 
@@ -23,6 +25,7 @@ const ReservationOverviewPage = () => {
     const toastrShownRef = useRef(false);
     const [reservations, setReservations] = useState([])
     const [searchParams, setSearchParams] = useSearchParams();
+    const [date, setDate] = useState();
     const navigate = useNavigate();
 
     function toasrMessage(message) {
@@ -84,6 +87,9 @@ const ReservationOverviewPage = () => {
                         console.log(reservation)
                         const message = await putReservation(reservation, true);
                         toasrMessage("You have succesfully paid");
+                        //WebSocket
+                        getRevenue(date)
+                        getAllReservations();
                     }
 
                     if (payment.status != "paid") {
@@ -99,6 +105,26 @@ const ReservationOverviewPage = () => {
         AsignValue();
         CheckForPayment();
     }, [user])
+
+    useEffect(() => {
+
+        const connection = new HubConnectionBuilder()
+            .withUrl('https://localhost:7205/hubs/reservation')
+            .withAutomaticReconnect()
+            .build();
+
+        connection.start()
+            .then(result => {
+                console.log('Connected!');
+
+                connection.on('ReceiveUpdatedStatus', message => {
+                    console.log(message);
+
+                    setReservations(message)
+                });
+            })
+            .catch(e => console.log('Connection failed: ', e));
+    }, []);
 
 
     function Home() {
