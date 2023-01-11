@@ -1,26 +1,15 @@
-import { useEffect, useState } from "react";
+
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Card, CardContent, Typography } from "@mui/material";
-import Avatar from '@mui/material/Avatar';
-import dayjs from "dayjs";
 import { CarouselItem } from "react-bootstrap";
 import Carousel from 'react-bootstrap/Carousel';
-import { useNavigate } from "react-router-dom";
 import GarageSimulationButton from "../components/simulation/GarageSimulationButton";
 import AccountService from "../services/AccountService";
 import { getReservationsByUser } from "../services/ReservationService";
-import '../style/HomePage.css';
-import { getReservationsByUser, getReservationById, putReservation } from "../services/ReservationService";
-import { createPayment, getPaymentById, goToCheckoutPage } from "../services/PaymentService";
-import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
-import React, { Component, ReactNode, useEffect, useState, useRef } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import FreeSpaceDisplay from "../components/FreeSpaceDisplay";
-import SettingsIcon from '@mui/icons-material/Settings';
-import AccountService from "../services/AccountService";
-import Carousel from 'react-bootstrap/Carousel';
-import { CarouselItem } from "react-bootstrap";
 import Avatar from '@mui/material/Avatar';
 import { toast } from 'react-toastify';
 import '../style/HomePage.css';
@@ -34,20 +23,21 @@ export default function HomePage() {
     const [stateReservations, setStatereservations] = useState<any[]>([]);
     const [stateUser, setstateUser] = useState<any>(null);
     const [searchParams, setSearchParams] = useSearchParams();
-    const unparsedJWT = service.getUser();
     const toastrShownRef = useRef(false);
 
-    let user: any;
-    let dateToday: any;
 
     async function getReservationsOfToday() {
-        const reservations = await getReservationsByUser(user.sub);
+
+        console.log(stateUser)
+        const reservations = await getReservationsByUser(stateUser.sub);
+        console.log(reservations);
         let reservationsToday: any[] = [];
 
         reservations.map((reservation: any) => {
             const reservationDate = new Date(reservation.ArrivalTime).toDateString();
+            const today = new Date().toDateString();
 
-            if (dateToday == reservationDate) {
+            if (today == reservationDate) {
                 reservationsToday.push(reservation);
             }
         })
@@ -55,6 +45,7 @@ export default function HomePage() {
         console.log(reservationsToday);
         setStatereservations(reservationsToday);
     }
+
 
 
     function toasrMessage(message: String) {
@@ -70,7 +61,7 @@ export default function HomePage() {
         })
     }
 
-    function toastrMessageError(message: String){
+    function toastrMessageError(message: String) {
         toast.error(message, {
             position: "top-right",
             autoClose: 3000,
@@ -83,23 +74,30 @@ export default function HomePage() {
         })
     }
 
-    function GoToReservations(){
+    function GoToReservations() {
 
         navigate("reservations");
     }
 
     useEffect(() => {
-        if (unparsedJWT == null) {
+        if (service.getUser() == null) {
             navigate("/login");
             return;
         }
 
-        user = service.parseJwt(unparsedJWT);
-        dateToday = new Date().toDateString();
+        setstateUser(service.parseJwt(service.getUser()));
 
-        setstateUser(user);
-        getReservationsOfToday();
+
+
     }, []);
+
+    useEffect(() => {
+        if (stateUser != null) {
+            getReservationsOfToday();
+        }
+    }, [stateUser]);
+
+
 
     return (
         <div className="eighty-screen flex flex-column">
@@ -112,56 +110,46 @@ export default function HomePage() {
                 </div>
                 <div className="flex column vertical-center h-50">
 
-                    <Typography className="text-black" variant="h6">You have <span className="text-primary text-26"> { stateReservations.length } </span> reservations today!</Typography>
+                    <Typography className="text-black" variant="h6">You have <span className="text-primary text-26"> {stateReservations.length} </span> reservations today!</Typography>
 
-                    <Carousel className="bg-primary" style={{width: "80%", backgroundColor: "#b8b8b8", marginBottom: "20px", padding: "10px"}}>
-                            { stateReservations.map((reservation, index) => {
-                                const arrivalDate = new Date(reservation.ArrivalTime);
-                                const arrivalTime = `${arrivalDate.getHours()}:${String(arrivalDate.getMinutes()).padStart(2, '0')}`;
-                                const date = dayjs(reservation.ArrivalTime).format("DD-MM-YYYY")
-                                const departureDate = new Date(reservation.DepartureTime);
-                                const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
-                                let textColor;
+                    <Carousel className="bg-primary" style={{ width: "80%", backgroundColor: "#b8b8b8", marginBottom: "20px", padding: "10px" }}>
+                        {stateReservations.map((reservation, index) => {
+                            const arrivalDate = new Date(reservation.ArrivalTime);
+                            const arrivalTime = `${arrivalDate.getHours()}:${String(arrivalDate.getMinutes()).padStart(2, '0')}`;
+                            const date = dayjs(reservation.ArrivalTime).format("DD-MM-YYYY")
+                            const departureDate = new Date(reservation.DepartureTime);
+                            const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
+                            let textColor;
 
-                                switch (reservation.Status) {
-                                    case "Paid":
-                                        textColor = "text-success";
-                                        break;
-                                    case "Awaiting payment":
-                                        textColor = "text-purple";
-                                        break;
+                            switch (reservation.Status) {
+                                case "Paid":
+                                    textColor = "text-success";
+                                    break;
+                                case "Awaiting payment":
+                                    textColor = "text-purple";
+                                    break;
 
-                                    default:
-                                        textColor = "text-warning";
-                                        break;
-                                }
-                                return (
-                                    <CarouselItem key={index}>
-                                        <div className='w-80 h-40' style={{margin: "auto", overflow: "auto"}}>
-                                            <Card className=''>
-                                                <CardContent className='p-3'>
-                                                    <div className='flex flex-column justify-between'>
-                                                        <Typography color="text.secondary">
-                                                            <b>Date:</b> {date}
-                                                        </Typography>
-                                                        <Typography color="text.secondary">
-                                                            <b>Time:</b> {arrivalTime + ' - ' + departureTime}
-                                                        </Typography>
-                                                    </div>
+                                default:
+                                    textColor = "text-warning";
+                                    break;
+                            }
+                            return (
+                                <CarouselItem key={index}>
+                                    <div className='w-80 h-40' style={{ margin: "auto", overflow: "auto" }}>
+                                        <Card className=''>
+                                            <CardContent className='p-3'>
+                                                <div className='flex flex-column justify-between'>
+                                                    <Typography color="text.secondary">
+                                                        <b>Date:</b> {date}
+                                                    </Typography>
+                                                    <Typography color="text.secondary">
+                                                        <b>Time:</b> {arrivalTime + ' - ' + departureTime}
+                                                    </Typography>
+                                                </div>
 
-                                                    <div className='flex flex-row justify-between'>
-                                                        <Typography color="text.secondary">
-                                                            <b>Space:</b> {reservation.SpaceID}-{reservation.SpaceFloor}-{reservation.SpaceRow}
-                                                        </Typography>
-
-                                                    </div>
-                                                    <div className='flex flex-row justify-between'>
-                                                        <Typography color="text.secondary">
-                                                            <b>License plate:</b> {reservation.Kenteken}
-                                                        </Typography>
-                                                    </div>
-                                                    <Typography className={textColor} sx={{ marginTop: 1 }} color="text.primary">
-                                                        {reservation.Status}
+                                                <div className='flex flex-row justify-between'>
+                                                    <Typography color="text.secondary">
+                                                        <b>Space:</b> {reservation.SpaceID}-{reservation.SpaceFloor}-{reservation.SpaceRow}
                                                     </Typography>
 
                                                 </div>
@@ -170,7 +158,7 @@ export default function HomePage() {
                                                         <b>License plate:</b> {reservation.Kenteken}
                                                     </Typography>
                                                 </div>
-                                                <Typography className='text-warning' sx={{ marginTop: 1 }} color="text.primary">
+                                                <Typography className={textColor} sx={{ marginTop: 1 }} color="text.primary">
                                                     {reservation.Status}
                                                 </Typography>
                                             </CardContent>
@@ -184,7 +172,7 @@ export default function HomePage() {
                     </Carousel>
 
                     <div className="flex row full-width space-evenly full-height max-h-35 px-4">
-                        <GarageSimulationButton />
+                        <GarageSimulationButton getReservation={getReservationsOfToday} />
                         <div onClick={GoToReservations} className="w-40 full-height border rounded-3 shadow flex column vertical-center horizontal-center">
                             <SettingsIcon className="text-primary" sx={{ fontSize: "60px", marginBottom: "10px" }} />
                             <Typography variant="body1">Manage</Typography>
@@ -192,6 +180,6 @@ export default function HomePage() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

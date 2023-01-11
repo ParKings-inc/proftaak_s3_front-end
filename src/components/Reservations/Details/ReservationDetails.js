@@ -27,32 +27,36 @@ const ReservationDetails = () => {
         navigate("/reservation/Delete", { state: { reservation: [reservation] } });
     }
 
-    async function handlePayment(reservationId, cost){
+    async function handlePayment(reservationId, cost) {
         let reservation;
         let paymentId;
-        
+
         try {
             reservation = await getReservationById(reservationId);
-            
+            console.log("RESERVATION ID:");
+            console.log(reservationId);
             paymentId = reservation.payment_id;
         } catch (error) {
             console.log(error);
         }
-    
+
         try {
             const payment = await getPaymentById(paymentId);
-    
-            if (payment.status == "open"){
+            console.log("PAYMENT:");
+            console.log(payment);
+            if (payment.status == "open") {
                 goToCheckoutPage(payment.links.checkout.href);
-            } else if (payment.status == "paid"){
+            } else if (payment.status == "paid") {
                 navigate("/");
             } else {
                 paymentId = null;
                 reservation.payment_id = null;
             }
-            
-            if(paymentId == null){
+
+            if (paymentId == null) {
                 const createdPayment = await createPayment(cost, reservation.id);
+                console.log("CREATED PAYMENT:");
+                console.log(createdPayment);
                 reservation.Id = reservation.id
                 reservation.payment_id = createdPayment.id;
 
@@ -60,13 +64,14 @@ const ReservationDetails = () => {
 
                 reservation.ArrivalTime = new Date(reservation.arrivalTime);
                 reservation.DepartureTime = new Date(reservation.departureTime);
-    
+
                 // reservation.arrivalTime = new Date(reservation.arrivalTime);
                 // reservation.departureTime = new Date(reservation.departureTime);
-                
+
                 // RESERVATION PAYMENT_ID IN DB WON'T EDIT
-                const statusMessage = await putReservation(reservation);
-                
+                const statusMessage = await putReservation(reservation, true);
+                console.log("STATUS MESSAGE:");
+                console.log(statusMessage);
                 goToCheckoutPage(createdPayment.links.checkout.href);
             }
         } catch (error) {
@@ -75,11 +80,11 @@ const ReservationDetails = () => {
     }
 
     useEffect(() => {
-        if(reservation.Status == "Awaiting payment"){
+        if (reservation.Status == "Awaiting payment") {
             setstateShow(true);
         }
     }, [])
-    
+
 
 
     return (
@@ -134,14 +139,14 @@ const ReservationDetails = () => {
                     </FormControl>
                 </div>
             }
-                {
+            {
                 stateShow &&
-                <Button sx={{ width: "100%" }} 
-                variant="contained" 
-                type="submit" 
-                color="primary" 
-                className='w-full' 
-                onClick={() => { handlePayment(reservation.ReservationID, 6.00)} }>
+                <Button sx={{ width: "100%" }}
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    className='w-full'
+                    onClick={() => { handlePayment(reservation.ReservationID, 6.00) }}>
                     Pay fees
                 </Button>
             }

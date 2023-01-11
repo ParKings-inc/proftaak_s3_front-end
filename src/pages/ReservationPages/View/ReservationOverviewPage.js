@@ -38,7 +38,7 @@ const ReservationOverviewPage = () => {
         })
     }
 
-    function toastrMessageError(message){
+    function toastrMessageError(message) {
         toast.error(message, {
             position: "top-right",
             autoClose: 3000,
@@ -55,7 +55,7 @@ const ReservationOverviewPage = () => {
     useEffect(() => {
         async function AsignValue() {
 
-            if(user.user == null && service.getUser() != null){
+            if (user.user == null && service.getUser() != null) {
                 user.userLogin(service.getUser());
             }
 
@@ -63,19 +63,19 @@ const ReservationOverviewPage = () => {
                 setReservations(await getReservationsByUser(user.user.sub))
             }
         }
-        
-        if(toastrShownRef.current) return;
-        toastrShownRef.current = true;
-        
-        const ridParam = searchParams.get("rid");
-        async function CheckForPayment(){
 
-            if(ridParam != null){
+        if (toastrShownRef.current) return;
+        toastrShownRef.current = true;
+
+        const ridParam = searchParams.get("rid");
+        async function CheckForPayment() {
+
+            if (ridParam != null) {
                 try {
                     const reservation = await getReservationById(ridParam);
                     const payment = await getPaymentById(reservation.payment_id);
 
-                    if(payment.status == "paid"){
+                    if (payment.status == "paid") {
                         reservation.status = "Paid";
                         reservation.Id = reservation.id;
                         reservation.arrivalTime = new Date(reservation.arrivalTime);
@@ -84,12 +84,12 @@ const ReservationOverviewPage = () => {
                         reservation.ArrivalTime = new Date(reservation.arrivalTime);
                         reservation.DepartureTime = new Date(reservation.departureTime);
 
-
-                        const message = await putReservation(reservation);
+                        console.log(reservation)
+                        const message = await putReservation(reservation, true);
                         toasrMessage("You have succesfully paid");
                     }
 
-                    if(payment.status != "paid"){
+                    if (payment.status != "paid") {
                         toastrMessageError("You have not paid");
                     }
 
@@ -112,7 +112,7 @@ const ReservationOverviewPage = () => {
         navigate("/reservations/create")
     }
 
-    function goToHome(){
+    function goToHome() {
         navigate("/");
     }
 
@@ -120,7 +120,7 @@ const ReservationOverviewPage = () => {
 
         <div className='center mt-25'>
             <div className='flex row mb-25'>
-                
+
                 <div onClick={goToHome} className='w-auto bg-primary px-1 rounded flex centered'>
                     {/* <h5 className='m-0 text-white'>X</h5> */}
                     <KeyboardArrowLeftIcon onClick={Home} className='scale-2 white' />
