@@ -57,13 +57,10 @@ const ReservationOverviewPage = () => {
     useEffect(() => {
         async function AsignValue() {
 
-            if (user.user == null && service.getUser() != null) {
-                user.userLogin(service.getUser());
-            }
 
-            if (user.user != null) {
-                setReservations(await getReservationsByUser(user.user.sub))
-            }
+
+            setReservations(await getReservationsByUser(service.parseJwt(service.getUser()).sub))
+
         }
 
         if (toastrShownRef.current) return;
