@@ -37,9 +37,13 @@ const ReceiptOverview = (props) => {
                                     </Typography>
                                 </div>
 
+
                                 <div className='flex flex-row justify-between'>
                                     <Typography color="text.secondary">
-                                        <b>Price:</b> {Receipts.Price + " Euro"}
+                                        <b>Price:</b> {(Receipts.Price === 0 ? 0.01 : Receipts.Price) + " Euro"}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                        <b>Status:</b> <span style={{ color: Receipts.Status == "Paid" ? "green" : "orange" }} > {Receipts.Status}</span>
                                     </Typography>
                                 </div>
                             </CardContent>
@@ -48,7 +52,7 @@ const ReceiptOverview = (props) => {
                 )
             })}
 
-        </div>
+        </div >
     )
 }
 
