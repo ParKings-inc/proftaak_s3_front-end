@@ -52,27 +52,30 @@ const ReservationDetails = () => {
                 </FormControl>
             </div>
 
-            <div className="input-group mb-3">
-                <FormControl sx={{ m: 1 }}>
-                    <Button
-                        variant="contained"
-                        color="error"
-                        onClick={CancelReservation}
-                    >
-                        Cancel
-                    </Button>
-                </FormControl>
-                <FormControl sx={{ m: 1 }}>
-                    <Button
-                        variant="contained"
-                        type="submit"
-                        color="success"
-                        onClick={UpdateReservation}
-                    >
-                        Edit reservation
-                    </Button>
-                </FormControl>
-            </div>
+            {reservation.Status === "Awaiting payment" ? null :
+                <div className="input-group mb-3">
+                    <FormControl sx={{ m: 1 }}>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={CancelReservation}
+                        >
+                            Cancel
+                        </Button>
+                    </FormControl>
+                    <FormControl sx={{ m: 1 }}>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            color="success"
+                            onClick={UpdateReservation}
+                        >
+                            Edit reservation
+                        </Button>
+                    </FormControl>
+                </div>
+            }
+
         </div>
 
     );
