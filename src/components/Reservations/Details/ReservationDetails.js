@@ -11,10 +11,12 @@ import { putReservation, getReservationById } from '../../../services/Reservatio
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useState, useEffect } from 'react';
+import { getReceiptsByReservation } from '../../../services/ReceiptService';
 
 
 const ReservationDetails = () => {
     const [stateShow, setstateShow] = useState(false);
+    const [receipt, setReceipt] = useState(null);
     const location = useLocation();
     let reservation = location.state.reservation[0];
     const navigate = useNavigate();
@@ -80,8 +82,13 @@ const ReservationDetails = () => {
     }
 
     useEffect(() => {
-        if (reservation.Status == "Awaiting payment") {
+        if (reservation.Status === "Awaiting payment") {
             setstateShow(true);
+            getReceiptsByReservation(reservation.ReservationID).then((e) => {
+                setReceipt(e);
+                console.log(reservation)
+                console.log(e);
+            })
         }
     }, [])
 
@@ -146,7 +153,7 @@ const ReservationDetails = () => {
                     type="submit"
                     color="primary"
                     className='w-full'
-                    onClick={() => { handlePayment(reservation.ReservationID, 6.00) }}>
+                    onClick={() => { handlePayment(reservation.ReservationID, receipt.Price === 0 ? 0.01 : receipt.Price) }}>
                     Pay fees
                 </Button>
             }

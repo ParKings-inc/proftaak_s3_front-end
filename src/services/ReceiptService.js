@@ -19,3 +19,15 @@ export async function getAllReceipts() {
       return [];
     }
   }
+
+  
+  export async function getReceiptsByReservation(id) {
+    try {
+      const response = await axios.get(api + `Receipts/${id}`);
+      return response.data;
+    } catch (error) {
+      return [];
+    }
+  }
+
+  
