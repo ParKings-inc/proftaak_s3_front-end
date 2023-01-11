@@ -1,14 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import axios from 'axios';
+import dayjs from "dayjs";
+import { getRevenue } from '../services/RevenueService';
 
 const WebSocketsGetSpacePage = () => {
     const [ spaces, setSpaces ] = useState([]);
+    const [date, setDate] = useState();
+    const [revenue, setRevenue] = useState(0);
     const latestPlaces = useRef(null);
 
     latestPlaces.current = spaces;
 
     const isInitialMount = useRef(true);
+
+    useEffect(() => {
+        getRevenue(date).then((e) => {
+          console.log(e);
+          setRevenue(e.data);
+        });
+      }, [date]);
 
     useEffect(() => {
         if (isInitialMount.current) {
@@ -48,9 +59,20 @@ const WebSocketsGetSpacePage = () => {
         }
     }
 
+    const ChangeRevenue = async () => {
+        try {
+            await axios.get(`https://localhost:7205/api/Receipts/byday/${dayjs(date).format("YYYY-MM-DD")}`)
+                    .then((Response) => console.log(Response));
+        }
+        catch(e) {
+            console.log('Changing revenue failed.', e);
+        }
+    }
+
   return (
     <>
-    <button onClick={requestSpaces}></button>
+    <button onClick={requestSpaces}>spaces</button>
+    <button onClick={ChangeRevenue}>revenue</button>
     </>    
   )
 }
