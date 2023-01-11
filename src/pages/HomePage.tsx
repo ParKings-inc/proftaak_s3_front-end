@@ -10,6 +10,22 @@ import GarageSimulationButton from "../components/simulation/GarageSimulationBut
 import AccountService from "../services/AccountService";
 import { getReservationsByUser } from "../services/ReservationService";
 import '../style/HomePage.css';
+import { getReservationsByUser, getReservationById, putReservation } from "../services/ReservationService";
+import { createPayment, getPaymentById, goToCheckoutPage } from "../services/PaymentService";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import React, { Component, ReactNode, useEffect, useState, useRef } from "react";
+import { Button, Card, CardContent, Typography } from "@mui/material";
+import LocalParkingIcon from '@mui/icons-material/LocalParking';
+import FreeSpaceDisplay from "../components/FreeSpaceDisplay";
+import SettingsIcon from '@mui/icons-material/Settings';
+import AccountService from "../services/AccountService";
+import Carousel from 'react-bootstrap/Carousel';
+import { CarouselItem } from "react-bootstrap";
+import Avatar from '@mui/material/Avatar';
+import { toast } from 'react-toastify';
+import '../style/HomePage.css';
+import dayjs from "dayjs";
+
 
 
 export default function HomePage() {
@@ -17,7 +33,9 @@ export default function HomePage() {
     const navigate = useNavigate();
     const [stateReservations, setStatereservations] = useState<any[]>([]);
     const [stateUser, setstateUser] = useState<any>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
     const unparsedJWT = service.getUser();
+    const toastrShownRef = useRef(false);
 
     let user: any;
     let dateToday: any;
@@ -38,7 +56,35 @@ export default function HomePage() {
         setStatereservations(reservationsToday);
     }
 
-    function GoToReservations() {
+
+    function toasrMessage(message: String) {
+        toast.success(message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+        })
+    }
+
+    function toastrMessageError(message: String){
+        toast.error(message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+        })
+    }
+
+    function GoToReservations(){
+
         navigate("reservations");
     }
 
@@ -53,8 +99,7 @@ export default function HomePage() {
 
         setstateUser(user);
         getReservationsOfToday();
-
-    }, [stateReservations.length]);
+    }, []);
 
     return (
         <div className="eighty-screen flex flex-column">
@@ -66,33 +111,57 @@ export default function HomePage() {
                     </div>
                 </div>
                 <div className="flex column vertical-center h-50">
-                    <Typography className="text-black" variant="h6">You have <span className="text-primary text-26"> {stateReservations.length} </span> reservations today!</Typography>
 
-                    <Carousel className="bg-primary" style={{ width: "80%", backgroundColor: "#b8b8b8", marginBottom: "20px", padding: "10px" }}>
-                        {stateReservations.map((reservation, index) => {
-                            const arrivalDate = new Date(reservation.ArrivalTime);
-                            const arrivalTime = `${arrivalDate.getHours()}:${String(arrivalDate.getMinutes()).padStart(2, '0')}`;
-                            const date = dayjs(reservation.ArrivalTime).format("DD-MM-YYYY")
-                            const departureDate = new Date(reservation.DepartureTime);
-                            const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
+                    <Typography className="text-black" variant="h6">You have <span className="text-primary text-26"> { stateReservations.length } </span> reservations today!</Typography>
 
-                            return (
-                                <CarouselItem key={index}>
-                                    <div className='w-80 h-40' style={{ margin: "auto", overflow: "auto" }}>
-                                        <Card className=''>
-                                            <CardContent className='p-3'>
-                                                <div className='flex flex-column justify-between'>
-                                                    <Typography color="text.secondary">
-                                                        <b>Date:</b> {date}
-                                                    </Typography>
-                                                    <Typography color="text.secondary">
-                                                        <b>Time:</b> {arrivalTime + ' - ' + departureTime}
-                                                    </Typography>
-                                                </div>
+                    <Carousel className="bg-primary" style={{width: "80%", backgroundColor: "#b8b8b8", marginBottom: "20px", padding: "10px"}}>
+                            { stateReservations.map((reservation, index) => {
+                                const arrivalDate = new Date(reservation.ArrivalTime);
+                                const arrivalTime = `${arrivalDate.getHours()}:${String(arrivalDate.getMinutes()).padStart(2, '0')}`;
+                                const date = dayjs(reservation.ArrivalTime).format("DD-MM-YYYY")
+                                const departureDate = new Date(reservation.DepartureTime);
+                                const departureTime = `${departureDate.getHours()}:${String(departureDate.getMinutes()).padStart(2, '0')}`;
+                                let textColor;
 
-                                                <div className='flex flex-row justify-between'>
-                                                    <Typography color="text.secondary">
-                                                        <b>Space:</b> {reservation.SpaceID}-{reservation.SpaceFloor}-{reservation.SpaceRow}
+                                switch (reservation.Status) {
+                                    case "Paid":
+                                        textColor = "text-success";
+                                        break;
+                                    case "Awaiting payment":
+                                        textColor = "text-purple";
+                                        break;
+
+                                    default:
+                                        textColor = "text-warning";
+                                        break;
+                                }
+                                return (
+                                    <CarouselItem key={index}>
+                                        <div className='w-80 h-40' style={{margin: "auto", overflow: "auto"}}>
+                                            <Card className=''>
+                                                <CardContent className='p-3'>
+                                                    <div className='flex flex-column justify-between'>
+                                                        <Typography color="text.secondary">
+                                                            <b>Date:</b> {date}
+                                                        </Typography>
+                                                        <Typography color="text.secondary">
+                                                            <b>Time:</b> {arrivalTime + ' - ' + departureTime}
+                                                        </Typography>
+                                                    </div>
+
+                                                    <div className='flex flex-row justify-between'>
+                                                        <Typography color="text.secondary">
+                                                            <b>Space:</b> {reservation.SpaceID}-{reservation.SpaceFloor}-{reservation.SpaceRow}
+                                                        </Typography>
+
+                                                    </div>
+                                                    <div className='flex flex-row justify-between'>
+                                                        <Typography color="text.secondary">
+                                                            <b>License plate:</b> {reservation.Kenteken}
+                                                        </Typography>
+                                                    </div>
+                                                    <Typography className={textColor} sx={{ marginTop: 1 }} color="text.primary">
+                                                        {reservation.Status}
                                                     </Typography>
 
                                                 </div>
