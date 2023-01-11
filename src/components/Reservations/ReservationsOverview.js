@@ -47,7 +47,7 @@ const ReservationOverview = (props) => {
                                         <b>Date:</b> {date}
                                     </Typography>
                                     <Typography color="text.secondary">
-                                        <b>Time:</b> {arrivalTime + ' - ' + departureTime}
+                                        <b>Time:</b> {arrivalTime + ' - ' + (reservation.DepartureTime == null ? "Now" : departureTime)}
                                     </Typography>
                                 </div>
 

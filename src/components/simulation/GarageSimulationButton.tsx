@@ -3,14 +3,14 @@ import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import { Typography } from "@mui/material";
 import GarageSimulationService from "../../services/simulation/GarageSimulationService";
 
-interface Props {}
+interface Props { }
 
 interface State {
     inside: boolean;
 }
 
 export default class GarageSimulationButton extends Component<Props, State> {
-    private static readonly LICENCE_PLATE: string = "AB-123-CD";
+    private static readonly LICENCE_PLATE: string = "JJ-887-F";
 
     public constructor(props: Props) {
         super(props);
