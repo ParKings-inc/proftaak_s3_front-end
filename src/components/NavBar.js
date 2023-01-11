@@ -39,6 +39,11 @@ const NavigationBar = (props) => {
                                         </Link>
                                     </li>
                                     <li className="nav-item p-3 fs-5">
+                                        <Link to="/receipt">
+                                            <p className="text-white h5">Receipts</p>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item p-3 fs-5">
                                         <Link to="/carpage">
                                             <p className="text-white h5">Car page</p>
                                         </Link>
