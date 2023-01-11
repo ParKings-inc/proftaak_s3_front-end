@@ -2,6 +2,7 @@ import { Component, ReactNode } from "react";
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import { Typography } from "@mui/material";
 import GarageSimulationService from "../../services/simulation/GarageSimulationService";
+import { getAllReservations } from "../../services/ReservationService";
 
 interface Props {
     getReservation: any;
@@ -13,7 +14,7 @@ interface State {
 }
 
 export default class GarageSimulationButton extends Component<Props, State> {
-    private static readonly LICENCE_PLATE: string = "GT-45-GF";
+    private static readonly LICENCE_PLATE: string = "JJ-887-F";
 
     public constructor(props: Props) {
         super(props);

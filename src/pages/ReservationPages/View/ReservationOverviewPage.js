@@ -15,6 +15,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import "../../../style/ReservationsPage.css";
 import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import { getAllReservations } from '../../../services/ReservationService';
 
 
 
@@ -88,6 +89,7 @@ const ReservationOverviewPage = () => {
                         toasrMessage("You have succesfully paid");
                         //WebSocket
                         getRevenue(date)
+                        getAllReservations();
                     }
 
                     if (payment.status != "paid") {
@@ -104,7 +106,7 @@ const ReservationOverviewPage = () => {
         CheckForPayment();
     }, [user])
 
-    useEffect(() => {        
+    useEffect(() => {
 
         const connection = new HubConnectionBuilder()
             .withUrl('https://localhost:7205/hubs/reservation')
