@@ -3,10 +3,13 @@ import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import { Typography } from "@mui/material";
 import GarageSimulationService from "../../services/simulation/GarageSimulationService";
 
-interface Props { }
+interface Props {
+    getReservation: any;
+}
 
 interface State {
     inside: boolean;
+
 }
 
 export default class GarageSimulationButton extends Component<Props, State> {
@@ -16,6 +19,7 @@ export default class GarageSimulationButton extends Component<Props, State> {
         super(props);
         this.state = {
             inside: false
+
         };
     }
 
@@ -28,18 +32,27 @@ export default class GarageSimulationButton extends Component<Props, State> {
         );
     }
 
+    public async componentDidMount(): Promise<void> {
+        console.log("setting inside")
+        const inside = sessionStorage.getItem("inside");
+        this.setState({ inside: inside === "true" });
+    }
+
     private async toggleGarage(): Promise<void> {
         if (!this.state.inside) {
             await this.enterGarage();
+            this.props.getReservation();
             return;
         }
         await this.leaveGarage();
+        this.props.getReservation();
     }
 
     private async enterGarage(): Promise<void> {
         if (!await GarageSimulationService.enterGarage(GarageSimulationButton.LICENCE_PLATE)) {
             return;
         }
+        sessionStorage.setItem("inside", "true");
         this.setState({
             inside: true
         });
@@ -49,6 +62,7 @@ export default class GarageSimulationButton extends Component<Props, State> {
         if (!await GarageSimulationService.leaveGarage(GarageSimulationButton.LICENCE_PLATE)) {
             return;
         }
+        sessionStorage.setItem("inside", "false");
         this.setState({
             inside: false
         });
